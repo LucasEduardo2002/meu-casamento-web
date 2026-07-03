@@ -25,7 +25,7 @@ interface GiftItem {
   payment_method?: 'pix' | 'external_purchase';
 }
 
-const API_BASE_URL = 'http://localhost:3000';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 function App() {
   // Navigation & Scroll states
@@ -112,53 +112,293 @@ function App() {
       // Fallback data in case the backend is not running
       setGifts([
         {
-          id: 1,
-          name: 'Jogo de Panelas Cerâmica',
-          description: 'Panelas antiaderentes elegantes para nos ajudar a não queimar a comida.',
-          price: 450.00,
-          image_url: 'https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?q=80&w=300&auto=format&fit=crop',
+          id: 1.00,
+          name: 'Jogo de Panelas de Cerâmica',
+          description: 'Jogo de panelas com revestimento cerâmico.',
+          price: 480.00,
+          image_url: 'https://images.unsplash.com/photo-1584990347163-2b86b71390d6?q=80&w=300&auto=format&fit=crop',
           status: 'available',
         },
         {
-          id: 2,
-          name: 'Jogo de Pratos Porto Brasil',
-          description: 'Pratos sofisticados para servir jantares especiais aos amigos.',
+          id: 2.00,
+          name: 'Aparelho de Jantar Completo',
+          description: 'Conjunto de pratos para refeições.',
           price: 350.00,
-          image_url: 'https://images.unsplash.com/photo-1589987593170-c5b62a93946a?q=80&w=300&auto=format&fit=crop',
+          image_url: 'https://images.unsplash.com/photo-1591632288574-a387f820a1ca?q=80&w=300&auto=format&fit=crop',
           status: 'available',
         },
         {
-          id: 3,
-          name: 'Ferro de passar roupas',
-          description: 'Para nos ajudar no dia a dia.',
-          price: 150.00,
-          image_url: 'https://images.unsplash.com/photo-1544644181-1484b3fdfc62?q=80&w=300&auto=format&fit=crop',
-          status: 'available',
-        },
-        {
-          id: 4,
-          name: 'Chaleira Elétrica 220V',
-          description: 'Para agilizar o café no dia a dia',
-          price: 70.00,
-          image_url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=300&auto=format&fit=crop',
-          status: 'available',
-        },
-        {
-          id: 5,
-          name: 'Jogo de talheres',
-          description: 'Para incrementar nosso jogo de jantar.',
-          price: 60.00,
-          image_url: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=300&auto=format&fit=crop',
-          status: 'available',
-        },
-        {
-          id: 6,
-          name: 'Air Fryer',
-          description: 'Para cozinharmos de forma saudável e, claro, super rápida.',
+          id: 3.00,
+          name: 'Airfryer',
+          description: 'Fritadeira elétrica para preparar alimentos com rapidez.',
           price: 400.00,
-          image_url: 'https://images.unsplash.com/photo-1621972750749-0fbb1abb7736?q=80&w=300&auto=format&fit=crop',
+          image_url: 'https://plus.unsplash.com/premium_photo-1711051351678-658b273f71d4?q=80&w=300&auto=format&fit=crop',
           status: 'available',
         },
+        {
+          id: 4.00,
+          name: 'Liquidificador ou Processador de Alimentos',
+          description: 'Para preparar sucos, vitaminas e receitas.',
+          price: 100.00,
+          image_url: 'https://plus.unsplash.com/premium_photo-1718043036199-d98bef36af46?q=80&w=300&auto=format&fit=crop',
+          status: 'available',
+        },
+        {
+          id: 5.00,
+          name: 'Conjunto de Taças',
+          description: 'Taças de vidro para brindar momentos especiais.',
+          price: 150.00,
+          image_url: 'https://images.unsplash.com/photo-1574494349420-ecf8ccbff974?q=80&w=300&auto=format&fit=crop',
+          status: 'available',
+        },
+        {
+          id: 6.00,
+          name: 'Faqueiro Inox',
+          description: 'Conjunto de talheres em aço inox.',
+          price: 80.00,
+          image_url: 'https://images.unsplash.com/photo-1503197553955-b4eafae3e08e?q=80&w=300&auto=format&fit=crop',
+          status: 'available',
+        },
+        {
+          id: 7.00,
+          name: 'Garrafa Térmica de Café',
+          description: 'Garrafa térmica para café ou chá.',
+          price: 60.00,
+          image_url: 'https://plus.unsplash.com/premium_photo-1752846974618-e14290df59c1?q=80&w=300&auto=format&fit=crop',
+          status: 'available',
+        },
+        {
+          id: 8.00,
+          name: 'Batedeira Planetária',
+          description: 'Batedeira para auxiliar no preparo de receitas.',
+          price: 350.00,
+          image_url: 'https://images.unsplash.com/photo-1595644258096-69155da290fd?q=80&w=300&auto=format&fit=crop',
+          status: 'available',
+        },
+        {
+          id: 9.00,
+          name: 'Aspirador de Pó Vertical',
+          description: 'Aspirador vertical para limpeza prática.',
+          price: 170.00,
+          image_url: 'https://plus.unsplash.com/premium_photo-1661679038354-cc7279833968?q=80&w=300&auto=format&fit=crop',
+          status: 'available',
+        },
+        {
+          id: 10.00,
+          name: 'Micro-ondas 220v',
+          description: 'Micro-ondas para aquecer as refeições.',
+          price: 580.00,
+          image_url: 'https://images.unsplash.com/photo-1608384156808-418b5c079968?q=80&w=300&auto=format&fit=crop',
+          status: 'available',
+        },
+        {
+          id: 11.00,
+          name: 'Sanduicheira',
+          description: 'Sanduicheira para fazer lanches.',
+          price: 80.00,
+          image_url: 'https://images.unsplash.com/photo-1588869712605-dfcd7f24e652?q=80&w=300&auto=format&fit=crop',
+          status: 'available',
+        },
+        {
+          id: 12.00,
+          name: 'Gelagua ou Bebedouro',
+          description: 'Gelagua para termos água gelada sempre à disposição.',
+          price: 450.00,
+          image_url: '/src/assets/gelagua.png',
+          status: 'available',
+        },
+        {
+          id: 13.00,
+          name: 'Ventilador de Coluna',
+          description: 'Ventilador para os dias quentes.',
+          price: 180.00,
+          image_url: 'https://images.unsplash.com/photo-1559719740-f4d59cf117cb?q=80&w=300&auto=format&fit=crop',
+          status: 'available',
+        },
+        {
+          id: 14.00,
+          name: 'Conjunto de Copos',
+          description: 'Copos de vidro para uso diário.',
+          price: 80.00,
+          image_url: 'https://plus.unsplash.com/premium_photo-1670426502195-6544f2debf1b?q=80&w=300&auto=format&fit=crop',
+          status: 'available',
+        },
+        {
+          id: 15.00,
+          name: 'Jogo de Assadeiras e Travessas',
+          description: 'Travessas de vidro para assar e servir.',
+          price: 180.00,
+          image_url: 'https://images.unsplash.com/photo-1720421920272-456e78a75e2e?q=80&w=300&auto=format&fit=crop',
+          status: 'available',
+        },
+        {
+          id: 16.00,
+          name: 'Conjunto de Potes para Mantimentos',
+          description: 'Conjunto de potes organizadores.',
+          price: 120.00,
+          image_url: 'https://images.unsplash.com/photo-1621318551436-68573392fd5c?q=80&w=300&auto=format&fit=crop',
+          status: 'available',
+        },
+        {
+          id: 17.00,
+          name: 'Kit de Utensílios de Silicone',
+          description: 'Utensílios de silicone para cozinha.',
+          price: 95.00,
+          image_url: 'https://plus.unsplash.com/premium_photo-1776720097326-9cf81f1560c5?q=80&w=300&auto=format&fit=crop',
+          status: 'available',
+        },
+        {
+          id: 18.00,
+          name: 'Tábua de Corte de Bambu',
+          description: 'Tábua de corte em bambu.',
+          price: 70.00,
+          image_url: 'https://images.unsplash.com/photo-1617695615794-a5abcece0f48?q=80&w=300&auto=format&fit=crop',
+          status: 'available',
+        },
+        {
+          id: 19.00,
+          name: 'Kit para Churrasco',
+          description: 'Faca, garfo e pegador para churrasco.',
+          price: 160.00,
+          image_url: 'https://plus.unsplash.com/premium_photo-1693221705527-d46b2477f5cd?q=80&w=300&auto=format&fit=crop',
+          status: 'available',
+        },
+        {
+          id: 20.00,
+          name: 'Secador de Louça',
+          description: 'Escorredor de louças para a cozinha.',
+          price: 110.00,
+          image_url: 'https://images.unsplash.com/photo-1601599561263-591607ab1606?q=80&w=300&auto=format&fit=crop',
+          status: 'available',
+        },
+        {
+          id: 21.00,
+          name: 'Boleira de Vidro',
+          description: 'Boleira com tampa de vidro.',
+          price: 90.00,
+          image_url: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=300&auto=format&fit=crop',
+          status: 'available',
+        },
+        {
+          id: 22.00,
+          name: 'Conjunto de Talheres de Sobremesa',
+          description: 'Talheres pequenos para servir sobremesas.',
+          price: 60.00,
+          image_url: 'https://plus.unsplash.com/premium_photo-1666739031577-1edb0ca25a60?q=80&w=300&auto=format&fit=crop',
+          status: 'available',
+        },
+        {
+          id: 23.00,
+          name: 'Jogo de Lençol de Algodão Queen',
+          description: 'Jogo de lençol queen de algodão.',
+          price: 250.00,
+          image_url: 'https://plus.unsplash.com/premium_photo-1670869816769-c64fbc7b9c4c?q=80&w=300&auto=format&fit=crop',
+          status: 'available',
+        },
+        {
+          id: 24.00,
+          name: 'Edredom Queen Cobre-Leito',
+          description: 'Edredom queen confortável.',
+          price: 320.00,
+          image_url: 'https://images.unsplash.com/photo-1686827986080-8ee55b055a2f?q=80&w=300&auto=format&fit=crop',
+          status: 'available',
+        },
+        {
+          id: 25.00,
+          name: 'Kit de Travesseiros Confort',
+          description: 'Travesseiros para o quarto.',
+          price: 120.00,
+          image_url: 'https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?q=80&w=300&auto=format&fit=crop',
+          status: 'available',
+        },
+        {
+          id: 26.00,
+          name: 'Protetor de Colchão Impermeável',
+          description: 'Protetor impermeável para colchão queen.',
+          price: 110.00,
+          image_url: 'https://plus.unsplash.com/premium_photo-1664015821142-32f429a6608f?q=80&w=300&auto=format&fit=crop',
+          status: 'available',
+        },
+        {
+          id: 27.00,
+          name: 'Jogo de Toalhas de Banho',
+          description: 'Jogo de toalhas de banho.',
+          price: 180.00,
+          image_url: 'https://plus.unsplash.com/premium_photo-1684445034670-b36aca25c25a?q=80&w=300&auto=format&fit=crop',
+          status: 'available',
+        },
+        {
+          id: 28.00,
+          name: 'Toalhas de Mesa e Jogo Americano',
+          description: 'Toalha de mesa e jogo americano.',
+          price: 120.00,
+          image_url: 'https://plus.unsplash.com/premium_photo-1670869816769-c64fbc7b9c4c?q=80&w=300&auto=format&fit=crop',
+          status: 'available',
+        },
+        {
+          id: 29.00,
+          name: 'Conjunto de Panos de Prato',
+          description: 'Panos de prato para cozinha.',
+          price: 50.00,
+          image_url: 'https://plus.unsplash.com/premium_photo-1750041545838-f2ef7b41599a?q=80&w=300&auto=format&fit=crop',
+          status: 'available',
+        },
+        {
+          id: 30.00,
+          name: 'Lixeira de Inox (Cozinha/Banheiro)',
+          description: 'Lixeira de inox com pedal.',
+          price: 90.00,
+          image_url: 'https://plus.unsplash.com/premium_photo-1664189121552-f6d1dbf2a45c?q=80&w=300&auto=format&fit=crop',
+          status: 'available',
+        },
+        {
+          id: 31.00,
+          name: 'Porta-sabonete Líquido e Porta-escovas',
+          description: 'Porta-sabonete líquido e porta-escovas para banheiro.',
+          price: 75.00,
+          image_url: 'https://plus.unsplash.com/premium_photo-1679064286720-9f28c0f012d8?q=80&w=300&auto=format&fit=crop',
+          status: 'available',
+        },
+        {
+          id: 32.00,
+          name: 'Tábua de Passar Roupa',
+          description: 'Tábua de passar roupa.',
+          price: 130.00,
+          image_url: 'https://images.unsplash.com/photo-1540544093-b0880061e1a5?q=80&w=300&auto=format&fit=crop',
+          status: 'available',
+        },
+        {
+          id: 33.00,
+          name: 'Fruteira de Mesa',
+          description: 'Fruteira para mesa.',
+          price: 110.00,
+          image_url: 'https://images.unsplash.com/photo-1605280179505-db8b72e318b7?q=80&w=300&auto=format&fit=crop',
+          status: 'available',
+        },
+        {
+          id: 34.00,
+          name: 'Manta Decorativa para Sofá',
+          description: 'Manta decorativa para sofá.',
+          price: 95.00,
+          image_url: 'https://plus.unsplash.com/premium_photo-1678375722586-b5eef2972f4f?q=80&w=300&auto=format&fit=crop',
+          status: 'available',
+        },
+        {
+          id: 35.00,
+          name: 'Mesa de Centro de Sala',
+          description: 'Mesa de centro para sala.',
+          price: 250.00,
+          image_url: 'https://images.unsplash.com/photo-1724582586580-8b52c02e99dd?q=80&w=300&auto=format&fit=crop',
+          status: 'available',
+        },
+        {
+          id: 36.00,
+          name: 'Sapateira Organizadora',
+          description: 'Sapateira organizadora.',
+          price: 130.00,
+          image_url: 'https://images.unsplash.com/photo-1478887011962-709960f8ced8?q=80&w=300&auto=format&fit=crop',
+          status: 'available',
+        }
       ]);
     }
   };
@@ -297,11 +537,11 @@ function App() {
 
 
   return (
-    <div className="fade-in">
+    <>
       {/* Floating Navbar */}
       <nav className="navbar">
         <div className="nav-brand" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <img src="/src/assets/J.png" alt="J & L Monograma" style={{ height: '40px', objectFit: 'contain' }} />
+          <img src="/src/assets/J.png" alt="J & L Monograma" style={{ height: '48px', objectFit: 'contain' }} />
           <span style={{ fontFamily: 'var(--font-serif)', fontSize: '22px', fontWeight: 600 }}>Jacieli & Lucas</span>
         </div>
         <div className="nav-links">
@@ -313,373 +553,376 @@ function App() {
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <section id="inicio" className="hero">
-        <div className="hero-content">
-          <div className="hero-text">
-            <div style={{ marginBottom: '15px' }}>
-              <img src="/src/assets/J.png" alt="Monograma" style={{ height: '70px', objectFit: 'contain' }} />
-            </div>
-            <span className="hero-subtitle">Convidamos você para celebrar</span>
-            <h1 className="hero-title">O Casamento de <br /> Jacieli & Lucas</h1>
-            <p className="hero-date">16 de Janeiro de 2027 • 16h30</p>
+      <div className="fade-in">
 
-            <p style={{ fontSize: '15px', color: 'var(--text-muted)', marginBottom: '15px' }}>
-              Faltam apenas alguns dias para iniciarmos esse novo capítulo de nossas vidas.
-            </p>
-
-            {/* Countdown Clock */}
-            <div className="countdown-container">
-              <div className="countdown-box">
-                <div className="countdown-num">{timeLeft.days}</div>
-                <div className="countdown-label">Dias</div>
+        {/* Hero Section */}
+        <section id="inicio" className="hero">
+          <div className="hero-content">
+            <div className="hero-text">
+              <div style={{ marginBottom: '15px' }}>
+                <img src="/src/assets/J.png" alt="Monograma" style={{ height: '130px', objectFit: 'contain' }} />
               </div>
-              <div className="countdown-box">
-                <div className="countdown-num">{timeLeft.hours}</div>
-                <div className="countdown-label">Horas</div>
-              </div>
-              <div className="countdown-box">
-                <div className="countdown-num">{timeLeft.minutes}</div>
-                <div className="countdown-label">Mins</div>
-              </div>
-              <div className="countdown-box">
-                <div className="countdown-num">{timeLeft.seconds}</div>
-                <div className="countdown-label">Segs</div>
-              </div>
-            </div>
-          </div>
+              <span className="hero-subtitle">Convidamos você para celebrar</span>
+              <h1 className="hero-title">O Casamento de <br /> Jacieli & Lucas</h1>
+              <p className="hero-date">16 de Janeiro de 2027 • 16h30</p>
 
-          <div className="hero-img-wrapper">
-            <img
-              src="/src/assets/couple_church.jpg"
-              alt="Jacieli e Lucas"
-              className="hero-img"
-              onError={(e) => {
-                // fallback image
-                (e.target as HTMLImageElement).src = "/src/assets/1.png";
-              }}
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Details of Ceremony and Reception */}
-      <section id="detalhes" className="section">
-        <h2 className="section-title">A Cerimônia & Recepção</h2>
-        <p className="section-subtitle">Onde e quando tudo vai acontecer</p>
-
-        <div className="details-grid">
-          {/* Ceremony Card */}
-          <div className="details-card">
-            <div className="details-icon">
-              <Heart size={32} />
-            </div>
-            <h3 className="details-name">A Celebração Religiosa</h3>
-            <div className="details-info">
-              <Calendar size={18} />
-              <span>Sábado, 16 de Janeiro de 2027</span>
-            </div>
-            <div className="details-info">
-              <Clock size={18} />
-              <span>Às 16h30</span>
-            </div>
-            <div className="details-info">
-              <MapPin size={18} />
-              <span>Matriz de Nossa Senhora de Lourdes</span>
-            </div>
-            <p className="details-description">
-              A cerimônia será realizada na Matriz de Nossa Senhora de Lourdes, na cidade de Campo Redondo/RN. Esperamos você para testemunhar os nossos votos de amor eterno.
-            </p>
-            <a
-              href="https://www.google.com/maps/search/?api=1&query=Matriz+de+Nossa+Senhora+de+Lourdes+Campo+Redondo+RN"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-map"
-            >
-              <Navigation size={16} /> Ver no Google Maps
-            </a>
-          </div>
-
-          {/* Reception Card */}
-          <div className="details-card">
-            <div className="details-icon">
-              <Wine size={32} />
-            </div>
-            <h3 className="details-name">A Recepção</h3>
-            <div className="details-info">
-              <Calendar size={18} />
-              <span>Sábado, 16 de Janeiro de 2027</span>
-            </div>
-            <div className="details-info">
-              <Clock size={18} />
-              <span>Logo após a celebração</span>
-            </div>
-            <div className="details-info">
-              <MapPin size={18} />
-              <span>Chácara Por do Sol, Sítio Ramal</span>
-            </div>
-            <p className="details-description">
-              Após a cerimônia religiosa, convidamos todos para comemorar conosco com uma linda festa na chácara Por do Sol, no sítio Ramal, em Campo Redondo/RN.
-            </p>
-            <a
-              href="https://www.google.com/maps/search/?api=1&query=Ch%C3%A1cara+Por+do+Sol+s%C3%ADtio+Ramal+RN"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-map"
-            >
-              <Navigation size={16} /> Ver no Google Maps
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* Timeline Section */}
-      <section id="historia" className="section section-alt">
-        <div className="section-content">
-          <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'center' }}>
-            <img src="/src/assets/2.png" alt="Ornamento" style={{ height: '50px', objectFit: 'contain', opacity: 0.8 }} />
-          </div>
-          <h2 className="section-title">Nossa História</h2>
-
-          <div className="timeline">
-
-            <div className="timeline-item timeline-right">
-              <div className="timeline-content">
-                <div className="timeline-date">Novembro de 2023</div>
-                <h3 className="timeline-title">O Início de Tudo</h3>
-                <p className="timeline-desc">O pedido de namoro oficializou o que nossos corações já gritavam. Jacieli e Lucas começam a trilhar o caminho em Deus que os levaria ao altar.</p>
-              </div>
-            </div>
-
-            <div className="timeline-item timeline-left">
-              <div className="timeline-content">
-                <div className="timeline-date">Março de 2026</div>
-                <h3 className="timeline-title">O Pedido</h3>
-                <p className="timeline-desc">Confiantes na intercessão de São José, Lucas fez o pedido mais especial de sua vida e Jacieli respondeu com o "Sim!" mais alegre.</p>
-              </div>
-            </div>
-
-            <div className="timeline-item timeline-right">
-              <div className="timeline-content">
-                <div className="timeline-date">16 de Janeiro de 2027</div>
-                <h3 className="timeline-title">O Grande Dia</h3>
-                <p className="timeline-desc">Diante de Deus e de nossos queridos amigos e familiares, nasce uma nova família.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* RSVP Component */}
-      <section id="rsvp" className="section">
-        <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'center' }}>
-          <img src="/src/assets/2.png" alt="Ornamento" style={{ height: '50px', objectFit: 'contain', opacity: 0.8 }} />
-        </div>
-        <h2 className="section-title">Confirmação de Presença</h2>
-        <p className="section-subtitle">Por favor, confirme sua presença até 15 de Dezembro de 2026</p>
-
-        <div className="rsvp-container">
-          {!rsvpSubmitted ? (
-            <form onSubmit={handleRsvpSubmit}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
-                <div className="form-group">
-                  <label className="form-label">Nome</label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="Ex: Lucas"
-                    className="form-input"
-                    value={rsvpName}
-                    onChange={(e) => setRsvpName(e.target.value)}
-                  />
-                </div>
-                <div className="form-group">
-                  <label className="form-label">Sobrenome</label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="Ex: Medeiros"
-                    className="form-input"
-                    value={rsvpLastName}
-                    onChange={(e) => setRsvpLastName(e.target.value)}
-                  />
-                </div>
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">E-mail</label>
-                <input
-                  type="email"
-                  placeholder="seu.email@exemplo.com"
-                  className="form-input"
-                  value={rsvpEmail}
-                  onChange={(e) => setRsvpEmail(e.target.value)}
-                />
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">Telefone de Contato</label>
-                <input
-                  type="tel"
-                  placeholder="(84) 99999-9999"
-                  className="form-input"
-                  value={rsvpPhone}
-                  onChange={(e) => setRsvpPhone(e.target.value)}
-                />
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">Você comparecerá?</label>
-                <div className="form-radio-group">
-                  <label className="form-radio-label">
-                    <input
-                      type="radio"
-                      name="confirmed"
-                      className="form-radio-input"
-                      checked={rsvpConfirmed === true}
-                      onChange={() => setRsvpConfirmed(true)}
-                    />
-                    Sim, irei comparecer!
-                  </label>
-                  <label className="form-radio-label">
-                    <input
-                      type="radio"
-                      name="confirmed"
-                      className="form-radio-input"
-                      checked={rsvpConfirmed === false}
-                      onChange={() => setRsvpConfirmed(false)}
-                    />
-                    Não poderei comparecer.
-                  </label>
-                </div>
-              </div>
-
-              {rsvpConfirmed && (
-                <>
-                  <div className="form-group">
-                    <label className="form-label">Quantidade de Acompanhantes (incluindo você)</label>
-                    <select
-                      className="form-input"
-                      value={rsvpGuestCount}
-                      onChange={(e) => setRsvpGuestCount(Number(e.target.value))}
-                    >
-                      <option value={1}>1 pessoa</option>
-                      <option value={2}>2 pessoas</option>
-                      <option value={3}>3 pessoas</option>
-                      <option value={4}>4 pessoas</option>
-                      <option value={5}>5 pessoas</option>
-                    </select>
-                  </div>
-
-                  {rsvpGuestCount > 1 && (
-                    <div className="form-group">
-                      <label className="form-label">Nome Completo dos Acompanhantes</label>
-                      <textarea
-                        rows={2}
-                        placeholder="Nomes separados por vírgula"
-                        className="form-input"
-                        value={rsvpCompanions}
-                        onChange={(e) => setRsvpCompanions(e.target.value)}
-                      />
-                    </div>
-                  )}
-                </>
-              )}
-
-              <div className="form-group">
-                <label className="form-label">Deixe uma mensagem para os noivos (Opcional)</label>
-                <textarea
-                  rows={3}
-                  placeholder="Deseje felicidades aos noivos..."
-                  className="form-input"
-                  value={rsvpMessage}
-                  onChange={(e) => setRsvpMessage(e.target.value)}
-                />
-              </div>
-
-              <button type="submit" disabled={rsvpSubmitting} className="btn-submit">
-                {rsvpSubmitting ? 'Enviando...' : 'Confirmar Presença'}
-              </button>
-            </form>
-          ) : (
-            <div className="success-card">
-              <div className="success-icon">
-                <Heart size={64} fill="var(--accent-rose)" color="var(--gold-primary)" />
-              </div>
-              <h3 className="success-title">Obrigado pela confirmação!</h3>
-              <p className="success-text">
-                {rsvpConfirmed
-                  ? 'Ficamos imensamente felizes em saber que você celebrará esse grande dia conosco.'
-                  : 'Ficamos tristes por você não poder comparecer, mas agradecemos o carinho e a resposta.'
-                }
+              <p style={{ fontSize: '15px', color: 'var(--text-muted)', marginBottom: '15px' }}>
+                Faltam apenas alguns dias para iniciarmos esse novo capítulo de nossas vidas.
               </p>
-              <button onClick={() => setRsvpSubmitted(false)} className="btn-reset">
-                Fazer outra confirmação ou atualizar dados
-              </button>
-            </div>
-          )}
-        </div>
-      </section>
 
-      {/* Gifts Grid Section */}
-      <section id="presentes" className="section section-alt">
-        <div className="section-content">
+              {/* Countdown Clock */}
+              <div className="countdown-container">
+                <div className="countdown-box">
+                  <div className="countdown-num">{timeLeft.days}</div>
+                  <div className="countdown-label">Dias</div>
+                </div>
+                <div className="countdown-box">
+                  <div className="countdown-num">{timeLeft.hours}</div>
+                  <div className="countdown-label">Horas</div>
+                </div>
+                <div className="countdown-box">
+                  <div className="countdown-num">{timeLeft.minutes}</div>
+                  <div className="countdown-label">Mins</div>
+                </div>
+                <div className="countdown-box">
+                  <div className="countdown-num">{timeLeft.seconds}</div>
+                  <div className="countdown-label">Segs</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="hero-img-wrapper">
+              <img
+                src="/src/assets/couple_church.jpg"
+                alt="Jacieli e Lucas"
+                className="hero-img"
+                onError={(e) => {
+                  // fallback image
+                  (e.target as HTMLImageElement).src = "/src/assets/1.png";
+                }}
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* Details of Ceremony and Reception */}
+        <section id="detalhes" className="section">
+          <h2 className="section-title">A Cerimônia & Recepção</h2>
+          <p className="section-subtitle">Onde e quando tudo vai acontecer</p>
+
+          <div className="details-grid">
+            {/* Ceremony Card */}
+            <div className="details-card">
+              <div className="details-icon">
+                <Heart size={32} />
+              </div>
+              <h3 className="details-name">A Celebração Religiosa</h3>
+              <div className="details-info">
+                <Calendar size={18} />
+                <span>Sábado, 16 de Janeiro de 2027</span>
+              </div>
+              <div className="details-info">
+                <Clock size={18} />
+                <span>Às 16h30</span>
+              </div>
+              <div className="details-info">
+                <MapPin size={18} />
+                <span>Matriz de Nossa Senhora de Lourdes</span>
+              </div>
+              <p className="details-description">
+                A cerimônia será realizada na Matriz de Nossa Senhora de Lourdes, na cidade de Campo Redondo/RN. Esperamos você para testemunhar os nossos votos de amor eterno.
+              </p>
+              <a
+                href="https://www.google.com/maps/search/?api=1&query=Matriz+de+Nossa+Senhora+de+Lourdes+Campo+Redondo+RN"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-map"
+              >
+                <Navigation size={16} /> Ver no Google Maps
+              </a>
+            </div>
+
+            {/* Reception Card */}
+            <div className="details-card">
+              <div className="details-icon">
+                <Wine size={32} />
+              </div>
+              <h3 className="details-name">A Recepção</h3>
+              <div className="details-info">
+                <Calendar size={18} />
+                <span>Sábado, 16 de Janeiro de 2027</span>
+              </div>
+              <div className="details-info">
+                <Clock size={18} />
+                <span>Logo após a celebração</span>
+              </div>
+              <div className="details-info">
+                <MapPin size={18} />
+                <span>Chácara Por do Sol, Sítio Ramal</span>
+              </div>
+              <p className="details-description">
+                Após a cerimônia religiosa, convidamos todos para comemorar conosco com uma linda festa na chácara Por do Sol, no sítio Ramal, em Campo Redondo/RN.
+              </p>
+              <a
+                href="https://www.google.com/maps/search/?api=1&query=Ch%C3%A1cara+Por+do+Sol+s%C3%ADtio+Ramal+RN"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-map"
+              >
+                <Navigation size={16} /> Ver no Google Maps
+              </a>
+            </div>
+          </div>
+        </section>
+
+        {/* Timeline Section */}
+        <section id="historia" className="section section-alt">
+          <div className="section-content">
+            <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'center' }}>
+              <img src="/src/assets/2.png" alt="Ornamento" style={{ height: '50px', objectFit: 'contain', opacity: 0.8 }} />
+            </div>
+            <h2 className="section-title">Nossa História</h2>
+
+            <div className="timeline">
+
+              <div className="timeline-item timeline-right">
+                <div className="timeline-content">
+                  <div className="timeline-date">Novembro de 2023</div>
+                  <h3 className="timeline-title">O Início de Tudo</h3>
+                  <p className="timeline-desc">O pedido de namoro oficializou o que nossos corações já gritavam. Jacieli e Lucas começam a trilhar o caminho em Deus que os levaria ao altar.</p>
+                </div>
+              </div>
+
+              <div className="timeline-item timeline-left">
+                <div className="timeline-content">
+                  <div className="timeline-date">Março de 2026</div>
+                  <h3 className="timeline-title">O Pedido</h3>
+                  <p className="timeline-desc">Confiantes na intercessão de São José, Lucas fez o pedido mais especial de sua vida e Jacieli respondeu com o "Sim!" mais alegre.</p>
+                </div>
+              </div>
+
+              <div className="timeline-item timeline-right">
+                <div className="timeline-content">
+                  <div className="timeline-date">16 de Janeiro de 2027</div>
+                  <h3 className="timeline-title">O Grande Dia</h3>
+                  <p className="timeline-desc">Diante de Deus e de nossos queridos amigos e familiares, nasce uma nova família.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* RSVP Component */}
+        <section id="rsvp" className="section">
           <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'center' }}>
             <img src="/src/assets/2.png" alt="Ornamento" style={{ height: '50px', objectFit: 'contain', opacity: 0.8 }} />
           </div>
-          <h2 className="section-title">Lista de Presentes</h2>
-          <p className="section-subtitle">Nossa lista de casamento e cotas de lua de mel</p>
+          <h2 className="section-title">Confirmação de Presença</h2>
+          <p className="section-subtitle">Por favor, confirme sua presença até 15 de Dezembro de 2026</p>
 
-          <p style={{ maxWidth: '700px', margin: '0 auto 40px', fontSize: '15px', color: 'var(--text-muted)' }}>
-            Criamos uma lista de presentes virtuais para os nossos convidados nos abençoarem nesta nova etapa.
-            Você pode escolher presentear de forma direta via PIX ou comprar o item físico em uma loja externa de sua preferência.
-          </p>
-
-          {/* Filter Tabs */}
-          <div className="gift-filters">
-            <button onClick={() => setFilter('all')} className={`filter-btn ${filter === 'all' ? 'active' : ''}`}>Todos</button>
-            <button onClick={() => setFilter('low')} className={`filter-btn ${filter === 'low' ? 'active' : ''}`}>Até R$ 200</button>
-            <button onClick={() => setFilter('mid')} className={`filter-btn ${filter === 'mid' ? 'active' : ''}`}>R$ 200 - R$ 500</button>
-            <button onClick={() => setFilter('high')} className={`filter-btn ${filter === 'high' ? 'active' : ''}`}>Acima de R$ 500</button>
-          </div>
-
-          {/* Gifts Cards Grid */}
-          <div className="gifts-grid">
-            {filteredGifts.map(gift => (
-              <div key={gift.id} className="gift-card">
-                <div className="gift-img-container">
-                  <img src={gift.image_url} alt={gift.name} className="gift-img" />
-                  <span className={`gift-badge badge-${gift.status}`}>
-                    {gift.status === 'available' ? 'Disponível' : gift.status === 'claimed' ? 'Reservado' : 'Entregue'}
-                  </span>
-                </div>
-                <div className="gift-body">
-                  <h3 className="gift-title">{gift.name}</h3>
-                  <p className="gift-desc">{gift.description}</p>
-                  <div className="gift-price-row">
-                    <span className="gift-price">{formatBRL(gift.price)}</span>
-                    {gift.status === 'available' ? (
-                      <button
-                        onClick={() => {
-                          setSelectedGift(gift);
-                          setModalTab('pix');
-                        }}
-                        className="btn-gift"
-                      >
-                        Presentear
-                      </button>
-                    ) : (
-                      <button className="btn-gift btn-gift-disabled" disabled>
-                        {gift.status === 'claimed' ? 'Reservado' : 'Já recebido'}
-                      </button>
-                    )}
+          <div className="rsvp-container">
+            {!rsvpSubmitted ? (
+              <form onSubmit={handleRsvpSubmit}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+                  <div className="form-group">
+                    <label className="form-label">Nome</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="Ex: Lucas"
+                      className="form-input"
+                      value={rsvpName}
+                      onChange={(e) => setRsvpName(e.target.value)}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label className="form-label">Sobrenome</label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="Ex: Medeiros"
+                      className="form-input"
+                      value={rsvpLastName}
+                      onChange={(e) => setRsvpLastName(e.target.value)}
+                    />
                   </div>
                 </div>
+
+                <div className="form-group">
+                  <label className="form-label">E-mail</label>
+                  <input
+                    type="email"
+                    placeholder="seu.email@exemplo.com"
+                    className="form-input"
+                    value={rsvpEmail}
+                    onChange={(e) => setRsvpEmail(e.target.value)}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Telefone de Contato</label>
+                  <input
+                    type="tel"
+                    placeholder="(84) 99999-9999"
+                    className="form-input"
+                    value={rsvpPhone}
+                    onChange={(e) => setRsvpPhone(e.target.value)}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Você comparecerá?</label>
+                  <div className="form-radio-group">
+                    <label className="form-radio-label">
+                      <input
+                        type="radio"
+                        name="confirmed"
+                        className="form-radio-input"
+                        checked={rsvpConfirmed === true}
+                        onChange={() => setRsvpConfirmed(true)}
+                      />
+                      Sim, irei comparecer!
+                    </label>
+                    <label className="form-radio-label">
+                      <input
+                        type="radio"
+                        name="confirmed"
+                        className="form-radio-input"
+                        checked={rsvpConfirmed === false}
+                        onChange={() => setRsvpConfirmed(false)}
+                      />
+                      Não poderei comparecer.
+                    </label>
+                  </div>
+                </div>
+
+                {rsvpConfirmed && (
+                  <>
+                    <div className="form-group">
+                      <label className="form-label">Quantidade de Acompanhantes (incluindo você)</label>
+                      <select
+                        className="form-input"
+                        value={rsvpGuestCount}
+                        onChange={(e) => setRsvpGuestCount(Number(e.target.value))}
+                      >
+                        <option value={1}>1 pessoa</option>
+                        <option value={2}>2 pessoas</option>
+                        <option value={3}>3 pessoas</option>
+                        <option value={4}>4 pessoas</option>
+                        <option value={5}>5 pessoas</option>
+                      </select>
+                    </div>
+
+                    {rsvpGuestCount > 1 && (
+                      <div className="form-group">
+                        <label className="form-label">Nome Completo dos Acompanhantes</label>
+                        <textarea
+                          rows={2}
+                          placeholder="Nomes separados por vírgula"
+                          className="form-input"
+                          value={rsvpCompanions}
+                          onChange={(e) => setRsvpCompanions(e.target.value)}
+                        />
+                      </div>
+                    )}
+                  </>
+                )}
+
+                <div className="form-group">
+                  <label className="form-label">Deixe uma mensagem para os noivos (Opcional)</label>
+                  <textarea
+                    rows={3}
+                    placeholder="Deseje felicidades aos noivos..."
+                    className="form-input"
+                    value={rsvpMessage}
+                    onChange={(e) => setRsvpMessage(e.target.value)}
+                  />
+                </div>
+
+                <button type="submit" disabled={rsvpSubmitting} className="btn-submit">
+                  {rsvpSubmitting ? 'Enviando...' : 'Confirmar Presença'}
+                </button>
+              </form>
+            ) : (
+              <div className="success-card">
+                <div className="success-icon">
+                  <Heart size={64} fill="var(--accent-rose)" color="var(--gold-primary)" />
+                </div>
+                <h3 className="success-title">Obrigado pela confirmação!</h3>
+                <p className="success-text">
+                  {rsvpConfirmed
+                    ? 'Ficamos imensamente felizes em saber que você celebrará esse grande dia conosco.'
+                    : 'Ficamos tristes por você não poder comparecer, mas agradecemos o carinho e a resposta.'
+                  }
+                </p>
+                <button onClick={() => setRsvpSubmitted(false)} className="btn-reset">
+                  Fazer outra confirmação ou atualizar dados
+                </button>
               </div>
-            ))}
+            )}
           </div>
-        </div>
-      </section>
+        </section>
+
+        {/* Gifts Grid Section */}
+        <section id="presentes" className="section section-alt">
+          <div className="section-content">
+            <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'center' }}>
+              <img src="/src/assets/2.png" alt="Ornamento" style={{ height: '50px', objectFit: 'contain', opacity: 0.8 }} />
+            </div>
+            <h2 className="section-title">Lista de Presentes</h2>
+            <p className="section-subtitle">Nossa lista de casamento e cotas de lua de mel</p>
+
+            <p style={{ maxWidth: '700px', margin: '0 auto 40px', fontSize: '15px', color: 'var(--text-muted)' }}>
+              Criamos uma lista de presentes virtuais para os nossos convidados nos abençoarem nesta nova etapa.
+              Você pode escolher presentear de forma direta via PIX ou comprar o item físico em uma loja externa de sua preferência.
+            </p>
+
+            {/* Filter Tabs */}
+            <div className="gift-filters">
+              <button onClick={() => setFilter('all')} className={`filter-btn ${filter === 'all' ? 'active' : ''}`}>Todos</button>
+              <button onClick={() => setFilter('low')} className={`filter-btn ${filter === 'low' ? 'active' : ''}`}>Até R$ 200</button>
+              <button onClick={() => setFilter('mid')} className={`filter-btn ${filter === 'mid' ? 'active' : ''}`}>R$ 200 - R$ 500</button>
+              <button onClick={() => setFilter('high')} className={`filter-btn ${filter === 'high' ? 'active' : ''}`}>Acima de R$ 500</button>
+            </div>
+
+            {/* Gifts Cards Grid */}
+            <div className="gifts-grid">
+              {filteredGifts.map(gift => (
+                <div key={gift.id} className="gift-card">
+                  <div className="gift-img-container">
+                    <img src={gift.image_url} alt={gift.name} className="gift-img" />
+                    <span className={`gift-badge badge-${gift.status}`}>
+                      {gift.status === 'available' ? 'Disponível' : gift.status === 'claimed' ? 'Reservado' : 'Entregue'}
+                    </span>
+                  </div>
+                  <div className="gift-body">
+                    <h3 className="gift-title">{gift.name}</h3>
+                    <p className="gift-desc">{gift.description}</p>
+                    <div className="gift-price-row">
+                      <span className="gift-price">{formatBRL(gift.price)}</span>
+                      {gift.status === 'available' ? (
+                        <button
+                          onClick={() => {
+                            setSelectedGift(gift);
+                            setModalTab('pix');
+                          }}
+                          className="btn-gift"
+                        >
+                          Presentear
+                        </button>
+                      ) : (
+                        <button className="btn-gift btn-gift-disabled" disabled>
+                          {gift.status === 'claimed' ? 'Reservado' : 'Já recebido'}
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      </div>
 
       {/* Gift Detail / Checkout Modal */}
       {selectedGift && (
@@ -873,7 +1116,7 @@ function App() {
       {/* Footer */}
       <footer className="footer">
         <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'center' }}>
-          <img src="/src/assets/J.png" alt="Monograma" style={{ height: '60px', objectFit: 'contain', filter: 'brightness(0) invert(1)' }} />
+          <img src="/src/assets/J.png" alt="Monograma" style={{ height: '100px', objectFit: 'contain', filter: 'brightness(0) invert(1)' }} />
         </div>
         <div className="footer-names">Jacieli & Lucas</div>
         <p className="footer-text">Com carinho, esperamos por você em nosso grande dia.</p>
@@ -881,7 +1124,7 @@ function App() {
           © 2026 Jacieli & Lucas. Todos os direitos reservados.
         </p>
       </footer>
-    </div>
+    </>
   );
 }
 
