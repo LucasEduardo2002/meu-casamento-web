@@ -204,7 +204,7 @@ function App() {
           name: 'Gelagua ou Bebedouro',
           description: 'Gelagua para termos água gelada sempre à disposição.',
           price: 450.00,
-          image_url: '/src/assets/gelagua.png',
+          image_url: '/gelagua.png',
           status: 'available',
         },
         {
@@ -541,7 +541,7 @@ function App() {
       {/* Floating Navbar */}
       <nav className="navbar">
         <div className="nav-brand" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <img src="/src/assets/J.png" alt="J & L Monograma" style={{ height: '48px', objectFit: 'contain' }} />
+          <img src="/J.png" alt="J & L Monograma" style={{ height: '48px', objectFit: 'contain' }} />
           <span style={{ fontFamily: 'var(--font-serif)', fontSize: '22px', fontWeight: 600 }}>Jacieli & Lucas</span>
         </div>
         <div className="nav-links">
@@ -560,7 +560,7 @@ function App() {
           <div className="hero-content">
             <div className="hero-text">
               <div style={{ marginBottom: '15px' }}>
-                <img src="/src/assets/J.png" alt="Monograma" style={{ height: '130px', objectFit: 'contain' }} />
+                <img src="/J.png" alt="Monograma" style={{ height: '130px', objectFit: 'contain' }} />
               </div>
               <span className="hero-subtitle">Convidamos você para celebrar</span>
               <h1 className="hero-title">O Casamento de <br /> Jacieli & Lucas</h1>
@@ -593,12 +593,12 @@ function App() {
 
             <div className="hero-img-wrapper">
               <img
-                src="/src/assets/couple_church.jpg"
+                src="/couple_church.jpg"
                 alt="Jacieli e Lucas"
                 className="hero-img"
                 onError={(e) => {
                   // fallback image
-                  (e.target as HTMLImageElement).src = "/src/assets/1.png";
+                  (e.target as HTMLImageElement).src = "/1.png";
                 }}
               />
             </div>
@@ -679,7 +679,7 @@ function App() {
         <section id="historia" className="section section-alt">
           <div className="section-content">
             <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'center' }}>
-              <img src="/src/assets/2.png" alt="Ornamento" style={{ height: '50px', objectFit: 'contain', opacity: 0.8 }} />
+              <img src="/2.png" alt="Ornamento" style={{ height: '50px', objectFit: 'contain', opacity: 0.8 }} />
             </div>
             <h2 className="section-title">Nossa História</h2>
 
@@ -715,7 +715,7 @@ function App() {
         {/* RSVP Component */}
         <section id="rsvp" className="section">
           <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'center' }}>
-            <img src="/src/assets/2.png" alt="Ornamento" style={{ height: '50px', objectFit: 'contain', opacity: 0.8 }} />
+            <img src="/2.png" alt="Ornamento" style={{ height: '50px', objectFit: 'contain', opacity: 0.8 }} />
           </div>
           <h2 className="section-title">Confirmação de Presença</h2>
           <p className="section-subtitle">Por favor, confirme sua presença até 15 de Dezembro de 2026</p>
@@ -867,7 +867,7 @@ function App() {
         <section id="presentes" className="section section-alt">
           <div className="section-content">
             <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'center' }}>
-              <img src="/src/assets/2.png" alt="Ornamento" style={{ height: '50px', objectFit: 'contain', opacity: 0.8 }} />
+              <img src="/2.png" alt="Ornamento" style={{ height: '50px', objectFit: 'contain', opacity: 0.8 }} />
             </div>
             <h2 className="section-title">Lista de Presentes</h2>
             <p className="section-subtitle">Nossa lista de casamento e cotas de lua de mel</p>
@@ -1116,7 +1116,7 @@ function App() {
       {/* Footer */}
       <footer className="footer">
         <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'center' }}>
-          <img src="/src/assets/J.png" alt="Monograma" style={{ height: '100px', objectFit: 'contain', filter: 'brightness(0) invert(1)' }} />
+          <img src="/J.png" alt="Monograma" style={{ height: '100px', objectFit: 'contain', filter: 'brightness(0) invert(1)' }} />
         </div>
         <div className="footer-names">Jacieli & Lucas</div>
         <p className="footer-text">Com carinho, esperamos por você em nosso grande dia.</p>
