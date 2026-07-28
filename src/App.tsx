@@ -116,7 +116,7 @@ function App() {
           name: 'Jogo de Panelas de Cerâmica',
           description: 'Jogo de panelas com revestimento cerâmico.',
           price: 480.00,
-          image_url: 'https://images.unsplash.com/photo-1584990347163-2b86b71390d6?q=80&w=300&auto=format&fit=crop',
+          image_url: "./assets/Lista-presentes/panelas-ceramica.jpg",
           status: 'available',
         },
         {
