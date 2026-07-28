@@ -116,7 +116,7 @@ function App() {
           name: 'Jogo de Panelas de Cerâmica',
           description: 'Jogo de panelas com revestimento cerâmico.',
           price: 480.00,
-          image_url: "./assets/Lista-presentes/panelas-ceramica.jpg",
+          image_url: '/Lista-presentes/panelas-ceramica.jpg',
           status: 'available',
         },
         {
@@ -124,7 +124,7 @@ function App() {
           name: 'Aparelho de Jantar Completo',
           description: 'Conjunto de pratos para refeições.',
           price: 350.00,
-          image_url: 'https://images.unsplash.com/photo-1591632288574-a387f820a1ca?q=80&w=300&auto=format&fit=crop',
+          image_url: '/Lista-presentes/aparelho-de-jantar.webp',
           status: 'available',
         },
         {
@@ -132,7 +132,7 @@ function App() {
           name: 'Airfryer',
           description: 'Fritadeira elétrica para preparar alimentos com rapidez.',
           price: 400.00,
-          image_url: 'https://plus.unsplash.com/premium_photo-1711051351678-658b273f71d4?q=80&w=300&auto=format&fit=crop',
+          image_url: '/Lista-presentes/air-frayer.webp',
           status: 'available',
         },
         {
@@ -140,7 +140,7 @@ function App() {
           name: 'Liquidificador ou Processador de Alimentos',
           description: 'Para preparar sucos, vitaminas e receitas.',
           price: 100.00,
-          image_url: 'https://plus.unsplash.com/premium_photo-1718043036199-d98bef36af46?q=80&w=300&auto=format&fit=crop',
+          image_url: '/Lista-presentes/liquidificador.webp',
           status: 'available',
         },
         {
@@ -148,7 +148,7 @@ function App() {
           name: 'Conjunto de Taças',
           description: 'Taças de vidro para brindar momentos especiais.',
           price: 150.00,
-          image_url: 'https://images.unsplash.com/photo-1574494349420-ecf8ccbff974?q=80&w=300&auto=format&fit=crop',
+          image_url: '/Lista-presentes/jogo_de_tacas.webp',
           status: 'available',
         },
         {
@@ -156,7 +156,7 @@ function App() {
           name: 'Faqueiro Inox',
           description: 'Conjunto de talheres em aço inox.',
           price: 80.00,
-          image_url: 'https://images.unsplash.com/photo-1503197553955-b4eafae3e08e?q=80&w=300&auto=format&fit=crop',
+          image_url: '/Lista-presentes/talheres.jpg',
           status: 'available',
         },
         {
@@ -164,7 +164,7 @@ function App() {
           name: 'Garrafa Térmica de Café',
           description: 'Garrafa térmica para café ou chá.',
           price: 60.00,
-          image_url: 'https://plus.unsplash.com/premium_photo-1752846974618-e14290df59c1?q=80&w=300&auto=format&fit=crop',
+          image_url: '/Lista-presentes/garrafa_de_cafe.png',
           status: 'available',
         },
         {
@@ -172,7 +172,7 @@ function App() {
           name: 'Batedeira Planetária',
           description: 'Batedeira para auxiliar no preparo de receitas.',
           price: 350.00,
-          image_url: 'https://images.unsplash.com/photo-1595644258096-69155da290fd?q=80&w=300&auto=format&fit=crop',
+          image_url: '/Lista-presentes/batedeira.webp',
           status: 'available',
         },
         {
@@ -180,7 +180,7 @@ function App() {
           name: 'Aspirador de Pó Vertical',
           description: 'Aspirador vertical para limpeza prática.',
           price: 170.00,
-          image_url: 'https://plus.unsplash.com/premium_photo-1661679038354-cc7279833968?q=80&w=300&auto=format&fit=crop',
+          image_url: '/Lista-presentes/aspirador_de_po.webp',
           status: 'available',
         },
         {
@@ -188,7 +188,7 @@ function App() {
           name: 'Micro-ondas 220v',
           description: 'Micro-ondas para aquecer as refeições.',
           price: 580.00,
-          image_url: 'https://images.unsplash.com/photo-1608384156808-418b5c079968?q=80&w=300&auto=format&fit=crop',
+          image_url: '/Lista-presentes/microondas.png',
           status: 'available',
         },
         {
@@ -196,7 +196,7 @@ function App() {
           name: 'Sanduicheira',
           description: 'Sanduicheira para fazer lanches.',
           price: 80.00,
-          image_url: 'https://images.unsplash.com/photo-1588869712605-dfcd7f24e652?q=80&w=300&auto=format&fit=crop',
+          image_url: '/Lista-presentes/sanduicheira.png',
           status: 'available',
         },
         {
@@ -204,7 +204,7 @@ function App() {
           name: 'Gelagua ou Bebedouro',
           description: 'Gelagua para termos água gelada sempre à disposição.',
           price: 450.00,
-          image_url: '/gelagua.png',
+          image_url: '/Lista-presentes/gelagua.png',
           status: 'available',
         },
         {
@@ -212,7 +212,7 @@ function App() {
           name: 'Ventilador de Coluna',
           description: 'Ventilador para os dias quentes.',
           price: 180.00,
-          image_url: 'https://images.unsplash.com/photo-1559719740-f4d59cf117cb?q=80&w=300&auto=format&fit=crop',
+          image_url: '/Lista-presentes/ventilador.png',
           status: 'available',
         },
         {
@@ -220,7 +220,7 @@ function App() {
           name: 'Conjunto de Copos',
           description: 'Copos de vidro para uso diário.',
           price: 80.00,
-          image_url: 'https://plus.unsplash.com/premium_photo-1670426502195-6544f2debf1b?q=80&w=300&auto=format&fit=crop',
+          image_url: '/Lista-presentes/conjunto_copos.png',
           status: 'available',
         },
         {
@@ -228,7 +228,7 @@ function App() {
           name: 'Jogo de Assadeiras e Travessas',
           description: 'Travessas de vidro para assar e servir.',
           price: 180.00,
-          image_url: 'https://images.unsplash.com/photo-1720421920272-456e78a75e2e?q=80&w=300&auto=format&fit=crop',
+          image_url: '/Lista-presentes/assadeira.png',
           status: 'available',
         },
         {
@@ -236,7 +236,7 @@ function App() {
           name: 'Conjunto de Potes para Mantimentos',
           description: 'Conjunto de potes organizadores.',
           price: 120.00,
-          image_url: 'https://images.unsplash.com/photo-1621318551436-68573392fd5c?q=80&w=300&auto=format&fit=crop',
+          image_url: '/Lista-presentes/potes_mantimento.png',
           status: 'available',
         },
         {
@@ -244,7 +244,7 @@ function App() {
           name: 'Kit de Utensílios de Silicone',
           description: 'Utensílios de silicone para cozinha.',
           price: 95.00,
-          image_url: 'https://plus.unsplash.com/premium_photo-1776720097326-9cf81f1560c5?q=80&w=300&auto=format&fit=crop',
+          image_url: '/Lista-presentes/utensilios_cozinha.png',
           status: 'available',
         },
         {
@@ -252,7 +252,7 @@ function App() {
           name: 'Tábua de Corte de Bambu',
           description: 'Tábua de corte em bambu.',
           price: 70.00,
-          image_url: 'https://images.unsplash.com/photo-1617695615794-a5abcece0f48?q=80&w=300&auto=format&fit=crop',
+          image_url: '/Lista-presentes/tabua_bambu.png',
           status: 'available',
         },
         {
@@ -260,15 +260,15 @@ function App() {
           name: 'Kit para Churrasco',
           description: 'Faca, garfo e pegador para churrasco.',
           price: 160.00,
-          image_url: 'https://plus.unsplash.com/premium_photo-1693221705527-d46b2477f5cd?q=80&w=300&auto=format&fit=crop',
+          image_url: '/Lista-presentes/kit_churrasco.png',
           status: 'available',
         },
         {
           id: 20.00,
-          name: 'Secador de Louça',
+          name: 'Escorredor de louça',
           description: 'Escorredor de louças para a cozinha.',
           price: 110.00,
-          image_url: 'https://images.unsplash.com/photo-1601599561263-591607ab1606?q=80&w=300&auto=format&fit=crop',
+          image_url: '/Lista-presentes/escorredor_louca.png',
           status: 'available',
         },
         {
@@ -276,7 +276,7 @@ function App() {
           name: 'Boleira de Vidro',
           description: 'Boleira com tampa de vidro.',
           price: 90.00,
-          image_url: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=300&auto=format&fit=crop',
+          image_url: '/Lista-presentes/boleira_vidro.png',
           status: 'available',
         },
         {
@@ -284,7 +284,7 @@ function App() {
           name: 'Conjunto de Talheres de Sobremesa',
           description: 'Talheres pequenos para servir sobremesas.',
           price: 60.00,
-          image_url: 'https://plus.unsplash.com/premium_photo-1666739031577-1edb0ca25a60?q=80&w=300&auto=format&fit=crop',
+          image_url: '/Lista-presentes/talheres_sobremesa.png',
           status: 'available',
         },
         {
@@ -292,7 +292,7 @@ function App() {
           name: 'Jogo de Lençol de Algodão Queen',
           description: 'Jogo de lençol queen de algodão.',
           price: 250.00,
-          image_url: 'https://plus.unsplash.com/premium_photo-1670869816769-c64fbc7b9c4c?q=80&w=300&auto=format&fit=crop',
+          image_url: '/Lista-presentes/lencol_queen.png',
           status: 'available',
         },
         {
@@ -300,7 +300,7 @@ function App() {
           name: 'Edredom Queen Cobre-Leito',
           description: 'Edredom queen confortável.',
           price: 320.00,
-          image_url: 'https://images.unsplash.com/photo-1686827986080-8ee55b055a2f?q=80&w=300&auto=format&fit=crop',
+          image_url: '/Lista-presentes/edredom_queen.png',
           status: 'available',
         },
         {
@@ -308,7 +308,7 @@ function App() {
           name: 'Kit de Travesseiros Confort',
           description: 'Travesseiros para o quarto.',
           price: 120.00,
-          image_url: 'https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?q=80&w=300&auto=format&fit=crop',
+          image_url: '/Lista-presentes/travesseiros.png',
           status: 'available',
         },
         {
@@ -316,7 +316,7 @@ function App() {
           name: 'Protetor de Colchão Impermeável',
           description: 'Protetor impermeável para colchão queen.',
           price: 110.00,
-          image_url: 'https://plus.unsplash.com/premium_photo-1664015821142-32f429a6608f?q=80&w=300&auto=format&fit=crop',
+          image_url: '/Lista-presentes/protetor_colchao.png',
           status: 'available',
         },
         {
@@ -324,7 +324,7 @@ function App() {
           name: 'Jogo de Toalhas de Banho',
           description: 'Jogo de toalhas de banho.',
           price: 180.00,
-          image_url: 'https://plus.unsplash.com/premium_photo-1684445034670-b36aca25c25a?q=80&w=300&auto=format&fit=crop',
+          image_url: '/Lista-presentes/toalhas_banho.png',
           status: 'available',
         },
         {
@@ -332,7 +332,7 @@ function App() {
           name: 'Toalhas de Mesa e Jogo Americano',
           description: 'Toalha de mesa e jogo americano.',
           price: 120.00,
-          image_url: 'https://plus.unsplash.com/premium_photo-1670869816769-c64fbc7b9c4c?q=80&w=300&auto=format&fit=crop',
+          image_url: '/Lista-presentes/toalhas_mesa.png',
           status: 'available',
         },
         {
