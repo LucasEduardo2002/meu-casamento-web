@@ -176,14 +176,6 @@ function App() {
           status: 'available',
         },
         {
-          id: 9.00,
-          name: 'Aspirador de Pó Vertical',
-          description: 'Aspirador vertical para limpeza prática.',
-          price: 170.00,
-          image_url: '/Lista-presentes/aspirador_de_po.webp',
-          status: 'available',
-        },
-        {
           id: 10.00,
           name: 'Micro-ondas 220v',
           description: 'Micro-ondas para aquecer as refeições.',
@@ -336,14 +328,6 @@ function App() {
           status: 'available',
         },
         {
-          id: 29.00,
-          name: 'Conjunto de Panos de Prato',
-          description: 'Panos de prato para cozinha.',
-          price: 50.00,
-          image_url: 'https://plus.unsplash.com/premium_photo-1750041545838-f2ef7b41599a?q=80&w=300&auto=format&fit=crop',
-          status: 'available',
-        },
-        {
           id: 30.00,
           name: 'Lixeira de Inox (Cozinha/Banheiro)',
           description: 'Lixeira de inox com pedal.',
@@ -373,14 +357,6 @@ function App() {
           description: 'Fruteira para mesa.',
           price: 110.00,
           image_url: 'https://images.unsplash.com/photo-1605280179505-db8b72e318b7?q=80&w=300&auto=format&fit=crop',
-          status: 'available',
-        },
-        {
-          id: 34.00,
-          name: 'Manta Decorativa para Sofá',
-          description: 'Manta decorativa para sofá.',
-          price: 95.00,
-          image_url: 'https://plus.unsplash.com/premium_photo-1678375722586-b5eef2972f4f?q=80&w=300&auto=format&fit=crop',
           status: 'available',
         },
         {
