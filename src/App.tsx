@@ -65,6 +65,9 @@ function App() {
   // Toast State
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
+  // Custom Pix Amount State
+  const [customAmount, setCustomAmount] = useState<number>(50);
+
   // Constants
   const PIX_KEY = '84988014439';
   const PIX_NAME = 'Lucas Eduardo Silva de Medeiros';
@@ -592,6 +595,14 @@ function App() {
       return;
     }
 
+    if (selectedGift.id === 0) {
+      showToast(`Obrigado pela sua contribuição de ${formatBRL(customAmount)}!`);
+      setSelectedGift(null);
+      setBuyerName('');
+      setBuyerPhone('');
+      return;
+    }
+
     setClaimSubmitting(true);
 
     const claimPayload = {
@@ -997,6 +1008,48 @@ function App() {
               Você pode escolher presentear de forma direta via PIX ou comprar o item físico em uma loja externa de sua preferência.
             </p>
 
+            {/* Pix de Qualquer Valor Banner */}
+            <div className="custom-contribution-banner" style={{
+              background: 'linear-gradient(135deg, rgba(230, 204, 178, 0.25) 0%, rgba(245, 235, 224, 0.4) 100%)',
+              border: '1px solid var(--gold-primary)',
+              borderRadius: '12px',
+              padding: '24px',
+              textAlign: 'center',
+              maxWidth: '600px',
+              margin: '0 auto 35px',
+              boxShadow: 'var(--shadow-sm)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '12px'
+            }}>
+              <Heart size={28} color="var(--gold-primary)" fill="var(--gold-light)" style={{ opacity: 0.8 }} />
+              <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '20px', color: 'var(--text-dark)', margin: 0 }}>
+                Presentear com outro valor
+              </h3>
+              <p style={{ fontSize: '14px', color: 'var(--text-muted)', margin: 0, maxWidth: '450px' }}>
+                Se você deseja nos abençoar com qualquer outro valor de sua preferência via PIX, clique no botão abaixo.
+              </p>
+              <button
+                onClick={() => {
+                  setSelectedGift({
+                    id: 0,
+                    name: 'Contribuição Livre',
+                    description: 'Contribuição com qualquer valor via PIX.',
+                    price: 0,
+                    image_url: '/Lista-presentes/operacao_lua_de_mel.png',
+                    status: 'available'
+                  });
+                  setModalTab('pix');
+                  setCustomAmount(50);
+                }}
+                className="btn-gift"
+                style={{ padding: '10px 24px', marginTop: '4px' }}
+              >
+                Contribuir com qualquer valor
+              </button>
+            </div>
+
             {/* Filter Tabs */}
             <div className="gift-filters">
               <button onClick={() => setFilter('all')} className={`filter-btn ${filter === 'all' ? 'active' : ''}`}>Todos</button>
@@ -1052,31 +1105,51 @@ function App() {
 
             <div className="modal-header">
               <h3 className="modal-title">{selectedGift.name}</h3>
-              <p className="modal-subtitle">Valor do presente: {formatBRL(selectedGift.price)}</p>
+              <p className="modal-subtitle">
+                Valor do presente: {selectedGift.id === 0 ? formatBRL(customAmount) : formatBRL(selectedGift.price)}
+              </p>
             </div>
 
-            <div className="modal-tabs">
-              <button
-                onClick={() => setModalTab('pix')}
-                className={`modal-tab ${modalTab === 'pix' ? 'active' : ''}`}
-              >
-                Presentear via PIX
-              </button>
-              <button
-                onClick={() => setModalTab('external')}
-                className={`modal-tab ${modalTab === 'external' ? 'active' : ''}`}
-              >
-                Comprar em Loja Externa
-              </button>
-            </div>
+            {selectedGift.id !== 0 && (
+              <div className="modal-tabs">
+                <button
+                  onClick={() => setModalTab('pix')}
+                  className={`modal-tab ${modalTab === 'pix' ? 'active' : ''}`}
+                >
+                  Presentear via PIX
+                </button>
+                <button
+                  onClick={() => setModalTab('external')}
+                  className={`modal-tab ${modalTab === 'external' ? 'active' : ''}`}
+                >
+                  Comprar em Loja Externa
+                </button>
+              </div>
+            )}
 
             <div className="modal-body">
               {modalTab === 'pix' ? (
                 /* Tab Pix Content */
                 <div className="pix-instructions">
-                  <p style={{ fontSize: '14px', marginBottom: '15px' }}>
-                    Escaneie o QR code abaixo ou copie o código Pix "Copia e Cola" para efetuar o pagamento do valor correspondente na conta do noivo.
-                  </p>
+                  {selectedGift.id === 0 ? (
+                    <div className="form-group" style={{ marginBottom: '20px', textAlign: 'left' }}>
+                      <label className="form-label" style={{ fontWeight: 600, color: 'var(--text-dark)' }}>
+                        Valor da Contribuição (R$)
+                      </label>
+                      <input
+                        type="number"
+                        min="1"
+                        className="form-input"
+                        placeholder="Digite o valor desejado"
+                        value={customAmount}
+                        onChange={e => setCustomAmount(Math.max(1, parseFloat(e.target.value) || 0))}
+                      />
+                    </div>
+                  ) : (
+                    <p style={{ fontSize: '14px', marginBottom: '15px' }}>
+                      Escaneie o QR code abaixo ou copie o código Pix "Copia e Cola" para efetuar o pagamento do valor correspondente na conta do noivo.
+                    </p>
+                  )}
 
                   <div className="pix-qr-container">
                     {/* Simulated elegant QR code visual */}
@@ -1097,7 +1170,7 @@ function App() {
                             key: PIX_KEY,
                             name: PIX_NAME,
                             city: PIX_CITY,
-                            amount: selectedGift.price,
+                            amount: selectedGift.id === 0 ? customAmount : (typeof selectedGift.price === 'number' ? selectedGift.price : parseFloat(selectedGift.price)),
                             description: selectedGift.name.substring(0, 20)
                           })
                         )}`}
@@ -1112,7 +1185,7 @@ function App() {
                       key: PIX_KEY,
                       name: PIX_NAME,
                       city: PIX_CITY,
-                      amount: selectedGift.price,
+                      amount: selectedGift.id === 0 ? customAmount : (typeof selectedGift.price === 'number' ? selectedGift.price : parseFloat(selectedGift.price)),
                       description: selectedGift.name.substring(0, 20)
                     })}
                   </div>
@@ -1123,7 +1196,7 @@ function App() {
                         key: PIX_KEY,
                         name: PIX_NAME,
                         city: PIX_CITY,
-                        amount: selectedGift.price,
+                        amount: selectedGift.id === 0 ? customAmount : (typeof selectedGift.price === 'number' ? selectedGift.price : parseFloat(selectedGift.price)),
                         description: selectedGift.name.substring(0, 20)
                       }),
                       'Código PIX Copia e Cola'
