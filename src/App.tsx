@@ -132,7 +132,7 @@ function App() {
         },
         {
           id: 3.00,
-          name: 'Airfryer',
+          name: 'Airfryer 220v',
           description: 'Fritadeira elétrica para preparar alimentos com rapidez.',
           price: 400.00,
           image_url: '/Lista-presentes/air-frayer.webp',
@@ -140,7 +140,7 @@ function App() {
         },
         {
           id: 4.00,
-          name: 'Liquidificador',
+          name: 'Liquidificador 220v',
           description: 'Para preparar sucos, vitaminas e receitas.',
           price: 100.00,
           image_url: '/Lista-presentes/liquidificador.webp',
@@ -188,7 +188,7 @@ function App() {
         },
         {
           id: 11.00,
-          name: 'Sanduicheira',
+          name: 'Sanduicheira 220v',
           description: 'Sanduicheira para fazer lanches.',
           price: 80.00,
           image_url: '/Lista-presentes/sanduicheira.png',
@@ -286,7 +286,7 @@ function App() {
           id: 23.00,
           name: 'Jogo de Lençol de Algodão Queen',
           description: 'Jogo de lençol queen de algodão.',
-          price: 250.00,
+          price: 200.00,
           image_url: '/Lista-presentes/lencol_queen.png',
           status: 'available',
         },
