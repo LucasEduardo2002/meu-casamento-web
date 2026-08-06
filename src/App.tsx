@@ -650,8 +650,28 @@ function App() {
     }
   };
 
+  // Group gifts by name to support limits without displaying them
+  const groupedGifts = React.useMemo(() => {
+    const grouped: Record<string, GiftItem[]> = {};
+    for (const gift of gifts) {
+      if (!grouped[gift.name]) {
+        grouped[gift.name] = [];
+      }
+      grouped[gift.name].push(gift);
+    }
+
+    return Object.keys(grouped).map(name => {
+      const items = grouped[name];
+      const availableItem = items.find(item => item.status === 'available');
+      if (availableItem) return availableItem;
+      const claimedItem = items.find(item => item.status === 'claimed');
+      if (claimedItem) return claimedItem;
+      return items[0];
+    });
+  }, [gifts]);
+
   // Filter gifts by price
-  const filteredGifts = gifts.filter(gift => {
+  const filteredGifts = groupedGifts.filter(gift => {
     const priceNum = typeof gift.price === 'number' ? gift.price : parseFloat(gift.price);
     if (filter === 'all') return true;
     if (filter === 'low') return priceNum <= 200;
