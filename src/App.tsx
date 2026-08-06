@@ -515,6 +515,14 @@ function App() {
           status: 'available',
         },
         {
+          id: 55.00,
+          name: 'Ferro De Passar Roupa A Seco',
+          description: 'Ferro de passar a seco clássico e eficiente.',
+          price: 140.00,
+          image_url: '/Lista-presentes/ferro_seco.png',
+          status: 'available',
+        },
+        {
           id: 54.00,
           name: 'operação lua de mel',
           description: 'Ajude os noivos a curtirem a lua de mel com qualquer valor ou cotas.',
