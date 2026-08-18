@@ -1765,44 +1765,46 @@ function App() {
         <div className="modal-overlay" onClick={() => setIsAdminOpen(false)}>
           <div className="modal-content" onClick={e => e.stopPropagation()} style={{ maxWidth: '400px' }}>
             <button className="modal-close" onClick={() => setIsAdminOpen(false)}>×</button>
-            <div className="modal-header" style={{ textAlign: 'center', marginBottom: '20px' }}>
+            <div className="modal-header" style={{ textAlign: 'center' }}>
               <Lock size={28} color="var(--gold-primary)" style={{ marginBottom: '10px' }} />
               <h3>Área dos Noivos</h3>
               <p style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Faça login para gerenciar presentes e convidados</p>
             </div>
             
-            <form onSubmit={handleAdminLogin} className="admin-login-form">
-              {adminError && (
-                <div style={{ color: '#d9534f', fontSize: '13px', marginBottom: '15px', textAlign: 'center' }}>
-                  {adminError}
+            <div className="modal-body">
+              <form onSubmit={handleAdminLogin} className="admin-login-form">
+                {adminError && (
+                  <div style={{ color: '#d9534f', fontSize: '13px', marginBottom: '15px', textAlign: 'center' }}>
+                    {adminError}
+                  </div>
+                )}
+                <div className="form-group" style={{ marginBottom: '15px', textAlign: 'left' }}>
+                  <label className="form-label">Usuário</label>
+                  <input
+                    type="text"
+                    required
+                    className="form-input"
+                    value={adminUser}
+                    onChange={e => setAdminUser(e.target.value)}
+                    placeholder="Nome de usuário"
+                  />
                 </div>
-              )}
-              <div className="form-group" style={{ marginBottom: '15px', textAlign: 'left' }}>
-                <label className="form-label">Usuário</label>
-                <input
-                  type="text"
-                  required
-                  className="form-input"
-                  value={adminUser}
-                  onChange={e => setAdminUser(e.target.value)}
-                  placeholder="Nome de usuário"
-                />
-              </div>
-              <div className="form-group" style={{ marginBottom: '20px', textAlign: 'left' }}>
-                <label className="form-label">Senha</label>
-                <input
-                  type="password"
-                  required
-                  className="form-input"
-                  value={adminPass}
-                  onChange={e => setAdminPass(e.target.value)}
-                  placeholder="••••••••"
-                />
-              </div>
-              <button type="submit" className="btn-submit" style={{ width: '100%' }}>
-                Entrar no Painel
-              </button>
-            </form>
+                <div className="form-group" style={{ marginBottom: '20px', textAlign: 'left' }}>
+                  <label className="form-label">Senha</label>
+                  <input
+                    type="password"
+                    required
+                    className="form-input"
+                    value={adminPass}
+                    onChange={e => setAdminPass(e.target.value)}
+                    placeholder="••••••••"
+                  />
+                </div>
+                <button type="submit" className="btn-submit" style={{ width: '100%' }}>
+                  Entrar no Painel
+                </button>
+              </form>
+            </div>
           </div>
         </div>
       )}
