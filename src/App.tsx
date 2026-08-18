@@ -1537,124 +1537,130 @@ function App() {
               {modalTab === 'pix' ? (
                 /* Tab Pix Content */
                 <div className="pix-instructions">
-                  {selectedGift.id === 0 ? (
-                    <div className="form-group" style={{ marginBottom: '20px', textAlign: 'left' }}>
-                      <label className="form-label" style={{ fontWeight: 600, color: 'var(--text-dark)' }}>
-                        Valor da Contribuição (R$)
-                      </label>
-                      <input
-                        type="number"
-                        className="form-input"
-                        placeholder="Digite o valor desejado"
-                        value={customAmount}
-                        onChange={e => setCustomAmount(e.target.value)}
-                      />
-                      {(parseFloat(customAmount) < 1 || !customAmount || isNaN(parseFloat(customAmount))) && (
-                        <span style={{ color: '#d9534f', fontSize: '12px', marginTop: '5px', display: 'block' }}>
-                          O valor mínimo de contribuição é R$ 1,00.
-                        </span>
-                      )}
-                    </div>
-                  ) : (
-                    <p style={{ fontSize: '14px', marginBottom: '15px' }}>
-                      Escaneie o QR code abaixo ou copie o código Pix "Copia e Cola" para efetuar o pagamento do valor correspondente na conta do noivo.
+                  <form onSubmit={handleClaimGift} style={{ textAlign: 'left' }}>
+                    <p style={{ fontSize: '14px', marginBottom: '15px', color: 'var(--text-dark)' }}>
+                      Por favor, preencha seus dados abaixo para podermos identificar seu presente e reservar o item em seu nome:
                     </p>
-                  )}
-
-                  {selectedGift.id === 0 && (parseFloat(customAmount) < 1 || !customAmount || isNaN(parseFloat(customAmount))) ? (
-                    <div style={{ textAlign: 'center', padding: '30px 20px', border: '1px dashed #d9534f', borderRadius: '8px', color: '#d9534f', background: 'rgba(217, 83, 79, 0.02)' }}>
-                      Aguardando um valor válido (mínimo de R$ 1,00) para gerar as instruções de pagamento.
+                    <div className="form-group" style={{ marginBottom: '15px' }}>
+                      <label className="form-label">Seu Nome Completo</label>
+                      <input
+                        type="text"
+                        required
+                        className="form-input"
+                        placeholder="Ex: Lucas Silva"
+                        value={buyerName}
+                        onChange={e => setBuyerName(e.target.value)}
+                      />
                     </div>
-                  ) : (
-                    <>
-                      <div className="pix-qr-container">
-                        {/* Simulated elegant QR code visual */}
-                        <div style={{
-                          width: '160px',
-                          height: '160px',
-                          background: 'white',
-                          border: '6px solid var(--gold-light)',
-                          borderRadius: '8px',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          position: 'relative'
-                        }}>
-                          <img
-                            src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(
-                              generatePixCode({
-                                key: PIX_KEY,
-                                name: PIX_NAME,
-                                city: PIX_CITY,
-                                amount: selectedGift.id === 0 ? customAmount : (typeof selectedGift.price === 'number' ? selectedGift.price : parseFloat(selectedGift.price)),
-                                description: selectedGift.name.substring(0, 20)
-                              })
-                            )}`}
-                            alt="PIX QR Code"
-                            style={{ width: '100%', height: '100%' }}
-                          />
+                    <div className="form-group" style={{ marginBottom: '20px' }}>
+                      <label className="form-label">Seu Telefone</label>
+                      <input
+                        type="tel"
+                        required
+                        className="form-input"
+                        placeholder="(84) 99999-9999"
+                        value={buyerPhone}
+                        onChange={e => setBuyerPhone(e.target.value)}
+                      />
+                    </div>
+
+                    {selectedGift.id === 0 && (
+                      <div className="form-group" style={{ marginBottom: '20px' }}>
+                        <label className="form-label" style={{ fontWeight: 600, color: 'var(--text-dark)' }}>
+                          Valor da Contribuição (R$)
+                        </label>
+                        <input
+                          type="number"
+                          className="form-input"
+                          placeholder="Digite o valor desejado"
+                          value={customAmount}
+                          onChange={e => setCustomAmount(e.target.value)}
+                        />
+                        {(parseFloat(customAmount) < 1 || !customAmount || isNaN(parseFloat(customAmount))) && (
+                          <span style={{ color: '#d9534f', fontSize: '12px', marginTop: '5px', display: 'block' }}>
+                            O valor mínimo de contribuição é R$ 1,00.
+                          </span>
+                        )}
+                      </div>
+                    )}
+
+                    {selectedGift.id === 0 && (parseFloat(customAmount) < 1 || !customAmount || isNaN(parseFloat(customAmount))) ? (
+                      <div style={{ textAlign: 'center', padding: '30px 20px', border: '1px dashed #d9534f', borderRadius: '8px', color: '#d9534f', background: 'rgba(217, 83, 79, 0.02)', marginBottom: '15px' }}>
+                        Aguardando um valor válido (mínimo de R$ 1,00) para gerar as instruções de pagamento.
+                      </div>
+                    ) : (
+                      <div style={{ borderTop: '1px solid var(--gold-light)', paddingTop: '20px', marginTop: '20px' }}>
+                        <p style={{ fontSize: '14px', marginBottom: '15px' }}>
+                          Escaneie o QR code abaixo ou copie o código Pix "Copia e Cola" para efetuar o pagamento do valor correspondente na conta do noivo.
+                        </p>
+
+                        <div className="pix-qr-container" style={{ margin: '20px auto', display: 'flex', justifyContent: 'center' }}>
+                          {/* Simulated elegant QR code visual */}
+                          <div style={{
+                            width: '160px',
+                            height: '160px',
+                            background: 'white',
+                            border: '6px solid var(--gold-light)',
+                            borderRadius: '8px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            position: 'relative'
+                          }}>
+                            <img
+                              src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(
+                                generatePixCode({
+                                  key: PIX_KEY,
+                                  name: PIX_NAME,
+                                  city: PIX_CITY,
+                                  amount: selectedGift.id === 0 ? customAmount : (typeof selectedGift.price === 'number' ? selectedGift.price : parseFloat(selectedGift.price)),
+                                  description: buyerName ? buyerName : selectedGift.name
+                                })
+                              )}`}
+                              alt="PIX QR Code"
+                              style={{ width: '100%', height: '100%' }}
+                            />
+                          </div>
                         </div>
-                      </div>
 
-                      <div className="pix-code-box">
-                        {generatePixCode({
-                          key: PIX_KEY,
-                          name: PIX_NAME,
-                          city: PIX_CITY,
-                          amount: selectedGift.id === 0 ? customAmount : (typeof selectedGift.price === 'number' ? selectedGift.price : parseFloat(selectedGift.price)),
-                          description: selectedGift.name.substring(0, 20)
-                        })}
-                      </div>
-
-                      <button
-                        onClick={() => copyText(
-                          generatePixCode({
+                        <div className="pix-code-box">
+                          {generatePixCode({
                             key: PIX_KEY,
                             name: PIX_NAME,
                             city: PIX_CITY,
                             amount: selectedGift.id === 0 ? customAmount : (typeof selectedGift.price === 'number' ? selectedGift.price : parseFloat(selectedGift.price)),
-                            description: selectedGift.name.substring(0, 20)
-                          }),
-                          'Código PIX Copia e Cola'
-                        )}
-                        className="btn-copy"
-                      >
-                        <Copy size={16} /> Copiar Código Pix
-                      </button>
+                            description: buyerName ? buyerName : selectedGift.name
+                          })}
+                        </div>
 
-                      {/* Claim Form */}
-                      <form onSubmit={handleClaimGift} style={{ borderTop: '1px solid var(--gold-light)', paddingTop: '20px', textAlign: 'left' }}>
-                        <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '15px' }}>
-                          Após realizar a transferência no app do seu banco, preencha seus dados para registrarmos a reserva deste item em nosso sistema.
-                        </p>
-                        <div className="form-group">
-                          <label className="form-label">Seu Nome Completo</label>
-                          <input
-                            type="text"
-                            required
-                            className="form-input"
-                            placeholder="Ex: Lucas Silva"
-                            value={buyerName}
-                            onChange={e => setBuyerName(e.target.value)}
-                          />
-                        </div>
-                        <div className="form-group">
-                          <label className="form-label">Seu Telefone</label>
-                          <input
-                            type="tel"
-                            required
-                            className="form-input"
-                            placeholder="(84) 99999-9999"
-                            value={buyerPhone}
-                            onChange={e => setBuyerPhone(e.target.value)}
-                          />
-                        </div>
-                        <button type="submit" disabled={claimSubmitting} className="btn-submit">
-                          {claimSubmitting ? 'Confirmando...' : 'Confirmar Envio do Pix'}
+                        <button
+                          type="button"
+                          onClick={() => copyText(
+                            generatePixCode({
+                              key: PIX_KEY,
+                              name: PIX_NAME,
+                              city: PIX_CITY,
+                              amount: selectedGift.id === 0 ? customAmount : (typeof selectedGift.price === 'number' ? selectedGift.price : parseFloat(selectedGift.price)),
+                              description: buyerName ? buyerName : selectedGift.name
+                            }),
+                            'Código PIX Copia e Cola'
+                          )}
+                          className="btn-copy"
+                        >
+                          <Copy size={16} /> Copiar Código Pix
                         </button>
-                      </form>
-                    </>
-                  )}
+                      </div>
+                    )}
+
+                    <div style={{ borderTop: '1px solid var(--gold-light)', paddingTop: '20px', marginTop: '20px' }}>
+                      <p style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '15px' }}>
+                        Importante: Após concluir a transferência no aplicativo do seu banco, clique no botão abaixo para registrar e confirmar a reserva do presente.
+                      </p>
+                      <button type="submit" disabled={claimSubmitting} className="btn-submit">
+                        {claimSubmitting ? 'Confirmando...' : 'Confirmar Envio do Pix'}
+                      </button>
+                    </div>
+                  </form>
                 </div>
               ) : (
                 /* Tab External Purchase Content */
