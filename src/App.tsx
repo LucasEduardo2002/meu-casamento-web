@@ -29,6 +29,7 @@ interface GiftItem {
   buyer_name?: string;
   buyer_phone?: string;
   payment_method?: 'pix' | 'external_purchase';
+  available_quantity?: number;
 }
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
@@ -668,6 +669,35 @@ function App() {
     }
   };
 
+  const handleAdminChangeQuantity = async (giftId: number, value: string) => {
+    let qty = 1;
+    if (value === 'ilimitado') {
+      qty = -1;
+    } else {
+      qty = parseInt(value, 10);
+    }
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/gifts/${giftId}/quantity`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ available_quantity: qty })
+      });
+
+      if (response.ok) {
+        showToast('Quantidade atualizada com sucesso!');
+        fetchGifts();
+      } else {
+        throw new Error('Erro ao atualizar quantidade.');
+      }
+    } catch (err) {
+      console.error(err);
+      showToast('Erro ao atualizar quantidade.');
+    }
+  };
+
   // Show Toast Message
   const showToast = (message: string) => {
     setToastMessage(message);
@@ -805,11 +835,16 @@ function App() {
 
     return Object.keys(grouped).map(name => {
       const items = grouped[name];
-      const availableItem = items.find(item => item.status === 'available');
+      const availableItem = items.find(item => item.status === 'available' && item.available_quantity !== 0);
       if (availableItem) return availableItem;
+
       const claimedItem = items.find(item => item.status === 'claimed');
-      if (claimedItem) return claimedItem;
-      return items[0];
+      if (claimedItem) return { ...claimedItem, status: 'claimed' } as GiftItem;
+      
+      const confirmedItem = items.find(item => item.status === 'confirmed');
+      if (confirmedItem) return { ...confirmedItem, status: 'confirmed' } as GiftItem;
+
+      return { ...items[0], status: 'claimed' } as GiftItem;
     });
   }, [gifts]);
 
@@ -999,6 +1034,7 @@ function App() {
                       <th>Presente</th>
                       <th>Valor</th>
                       <th>Status</th>
+                      <th>Disponíveis</th>
                       <th>Comprador</th>
                       <th>Telefone</th>
                       <th>Canal</th>
@@ -1020,6 +1056,35 @@ function App() {
                             <span className={`status-badge status-${g.status}`}>
                               {g.status === 'available' ? 'Disponível' : g.status === 'claimed' ? 'Reservado' : 'Confirmado'}
                             </span>
+                          </td>
+                          <td>
+                            {g.status === 'available' ? (
+                              <select
+                                className="admin-quantity-select"
+                                style={{
+                                  padding: '4px 8px',
+                                  borderRadius: '4px',
+                                  border: '1px solid var(--gold-light)',
+                                  outline: 'none',
+                                  fontFamily: 'var(--font-sans)',
+                                  fontSize: '13px'
+                                }}
+                                value={g.available_quantity === -1 ? 'ilimitado' : String(g.available_quantity ?? 1)}
+                                onChange={e => handleAdminChangeQuantity(g.id, e.target.value)}
+                              >
+                                <option value="0">0 (Reservado)</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="ilimitado">Ilimitado</option>
+                              </select>
+                            ) : (
+                              <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
+                                {g.status === 'claimed' ? 'Reservado' : 'Confirmado'}
+                              </span>
+                            )}
                           </td>
                           <td>{g.buyer_name || '-'}</td>
                           <td>{g.buyer_phone || '-'}</td>
@@ -1053,7 +1118,7 @@ function App() {
                       ))}
                     {gifts.length === 0 && (
                       <tr>
-                        <td colSpan={8} className="empty-row">Nenhum presente encontrado.</td>
+                        <td colSpan={9} className="empty-row">Nenhum presente encontrado.</td>
                       </tr>
                     )}
                   </tbody>
