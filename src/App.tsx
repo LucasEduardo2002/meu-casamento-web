@@ -7,7 +7,13 @@ import {
   Copy,
   Check,
   Navigation,
-  Wine
+  Wine,
+  Lock,
+  LogOut,
+  Trash2,
+  Users,
+  RefreshCw,
+  Gift
 } from 'lucide-react';
 import './App.css';
 import { generatePixCode } from './utils/pix';
@@ -67,6 +73,18 @@ function App() {
 
   // Custom Pix Amount State
   const [customAmount, setCustomAmount] = useState<number>(50);
+
+  // Admin Dashboard States
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(() => localStorage.getItem('isAdminLoggedIn') === 'true');
+  const [isAdminOpen, setIsAdminOpen] = useState(false);
+  const [adminUser, setAdminUser] = useState('');
+  const [adminPass, setAdminPass] = useState('');
+  const [adminError, setAdminError] = useState('');
+  const [adminRsvps, setAdminRsvps] = useState<any[]>([]);
+  const [adminTab, setAdminTab] = useState<'rsvps' | 'gifts'>('rsvps');
+  const [adminSearch, setAdminSearch] = useState('');
+  const [adminGiftFilter, setAdminGiftFilter] = useState<'all' | 'claimed' | 'confirmed' | 'available'>('all');
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   // Constants
   const PIX_KEY = '84988014439';
@@ -538,6 +556,118 @@ function App() {
     fetchGifts();
   }, []);
 
+  // Fetch RSVPs from Backend
+  const fetchRsvps = async () => {
+    setIsRefreshing(true);
+    try {
+      const response = await fetch(`${API_BASE_URL}/users-module`);
+      if (response.ok) {
+        const data = await response.json();
+        setAdminRsvps(data);
+      }
+    } catch (err) {
+      console.error(err);
+      showToast('Erro ao carregar RSVPs.');
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
+
+  // Auto-fetch RSVPs if admin is logged in
+  useEffect(() => {
+    if (isAdminLoggedIn) {
+      fetchRsvps();
+    }
+  }, [isAdminLoggedIn]);
+
+  // Admin Actions
+  const handleAdminLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (adminUser === 'jacielielucas1601' && adminPass === 'uvlef12092002') {
+      setIsAdminLoggedIn(true);
+      localStorage.setItem('isAdminLoggedIn', 'true');
+      setIsAdminOpen(false);
+      setAdminUser('');
+      setAdminPass('');
+      setAdminError('');
+      fetchRsvps();
+      fetchGifts();
+      showToast('Login de administrador efetuado!');
+    } else {
+      setAdminError('Usuário ou senha incorretos.');
+    }
+  };
+
+  const handleAdminLogout = () => {
+    setIsAdminLoggedIn(false);
+    localStorage.removeItem('isAdminLoggedIn');
+    showToast('Sessão de administrador encerrada.');
+  };
+
+  const handleAdminRefresh = async () => {
+    await Promise.all([fetchRsvps(), fetchGifts()]);
+    showToast('Dados atualizados com sucesso!');
+  };
+
+  const handleAdminUnclaim = async (giftId: number, giftName: string) => {
+    if (!window.confirm(`Tem certeza que deseja liberar o presente "${giftName}"? Ele voltará a ficar disponível.`)) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/gifts/${giftId}/unclaim`, {
+        method: 'POST',
+      });
+      if (response.ok) {
+        showToast(`Presente "${giftName}" liberado com sucesso!`);
+        fetchGifts();
+      } else {
+        throw new Error('Erro ao liberar presente.');
+      }
+    } catch (err) {
+      console.error(err);
+      showToast('Erro ao liberar o presente.');
+    }
+  };
+
+  const handleAdminConfirm = async (giftId: number, giftName: string) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/gifts/${giftId}/confirm`, {
+        method: 'POST',
+      });
+      if (response.ok) {
+        showToast(`Recebimento do presente "${giftName}" confirmado!`);
+        fetchGifts();
+      } else {
+        throw new Error('Erro ao confirmar presente.');
+      }
+    } catch (err) {
+      console.error(err);
+      showToast('Erro ao confirmar o presente.');
+    }
+  };
+
+  const handleAdminDeleteRsvp = async (rsvpId: number, name: string) => {
+    if (!window.confirm(`Deseja realmente excluir a confirmação de presença de "${name}"?`)) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/users-module/${rsvpId}`, {
+        method: 'DELETE',
+      });
+      if (response.ok) {
+        showToast(`Confirmação de "${name}" excluída.`);
+        fetchRsvps();
+      } else {
+        throw new Error('Erro ao excluir RSVP.');
+      }
+    } catch (err) {
+      console.error(err);
+      showToast('Erro ao excluir RSVP.');
+    }
+  };
+
   // Show Toast Message
   const showToast = (message: string) => {
     setToastMessage(message);
@@ -694,6 +824,249 @@ function App() {
     return isNaN(num) ? 'R$ 0,00' : num.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   };
 
+
+  if (isAdminLoggedIn) {
+    return (
+      <div className="admin-dashboard animate-fade-in">
+        <header className="admin-header">
+          <div className="admin-brand">
+            <Heart className="heart-icon" size={20} fill="var(--gold-primary)" color="var(--gold-primary)" />
+            <span style={{ fontFamily: 'var(--font-serif)', fontSize: '22px', fontWeight: 600 }}>Painel dos Noivos</span>
+          </div>
+          <div className="admin-header-actions">
+            <button onClick={handleAdminRefresh} className="btn-refresh" title="Atualizar dados" disabled={isRefreshing}>
+              <RefreshCw className={isRefreshing ? "spin-animation" : ""} size={16} />
+            </button>
+            <button onClick={handleAdminLogout} className="btn-logout">
+              <LogOut size={16} /> Sair do Painel
+            </button>
+          </div>
+        </header>
+
+        <div className="admin-content">
+          <div className="admin-tabs">
+            <button
+              className={`admin-tab ${adminTab === 'rsvps' ? 'active' : ''}`}
+              onClick={() => setAdminTab('rsvps')}
+            >
+              <Users size={16} /> RSVPs ({adminRsvps.length})
+            </button>
+            <button
+              className={`admin-tab ${adminTab === 'gifts' ? 'active' : ''}`}
+              onClick={() => setAdminTab('gifts')}
+            >
+              <Gift size={16} /> Presentes ({gifts.length})
+            </button>
+          </div>
+
+          {adminTab === 'rsvps' ? (
+            <div className="admin-section-panel">
+              <div className="admin-section-header">
+                <h2>Lista de Convidados Confirmados</h2>
+                <div className="admin-summary-badge">
+                  Total de pessoas confirmadas: <strong>
+                    {adminRsvps.reduce((acc, curr) => acc + (curr.confirmed_presence ? (curr.guest_count || 1) : 0), 0)}
+                  </strong>
+                </div>
+              </div>
+
+              <div className="admin-filters">
+                <input
+                  type="text"
+                  placeholder="Pesquisar por nome..."
+                  className="admin-search-input"
+                  value={adminSearch}
+                  onChange={e => setAdminSearch(e.target.value)}
+                />
+              </div>
+
+              <div className="admin-table-container">
+                <table className="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Nome</th>
+                      <th>Presença</th>
+                      <th>Acompanhantes (Total)</th>
+                      <th>Nomes dos Acompanhantes</th>
+                      <th>Contato</th>
+                      <th>Mensagem</th>
+                      <th>Data</th>
+                      <th>Ações</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {adminRsvps
+                      .filter(rsvp => {
+                        const fullName = `${rsvp.firstname} ${rsvp.lastname}`.toLowerCase();
+                        return fullName.includes(adminSearch.toLowerCase());
+                      })
+                      .map(rsvp => (
+                        <tr key={rsvp.id}>
+                          <td><strong>{rsvp.firstname} {rsvp.lastname}</strong></td>
+                          <td>
+                            <span className={`status-badge ${rsvp.confirmed_presence ? 'status-confirmed' : 'status-declined'}`}>
+                              {rsvp.confirmed_presence ? 'Confirmado' : 'Ausente'}
+                            </span>
+                          </td>
+                          <td>{rsvp.confirmed_presence ? rsvp.guest_count : 0}</td>
+                          <td style={{ fontSize: '13px' }}>
+                            {rsvp.companion_names || '-'}
+                          </td>
+                          <td style={{ fontSize: '13px' }}>
+                            {rsvp.email && <div>{rsvp.email}</div>}
+                            {rsvp.phone && <div>{rsvp.phone}</div>}
+                            {!rsvp.email && !rsvp.phone && '-'}
+                          </td>
+                          <td className="admin-table-message" title={rsvp.message}>
+                            {rsvp.message || '-'}
+                          </td>
+                          <td style={{ fontSize: '12px' }}>
+                            {rsvp.confirmed_at ? new Date(rsvp.confirmed_at).toLocaleDateString('pt-BR') : '-'}
+                          </td>
+                          <td>
+                            <button
+                              onClick={() => handleAdminDeleteRsvp(rsvp.id, `${rsvp.firstname} ${rsvp.lastname}`)}
+                              className="btn-action btn-delete"
+                              title="Remover RSVP"
+                            >
+                              <Trash2 size={16} />
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    {adminRsvps.length === 0 && (
+                      <tr>
+                        <td colSpan={8} className="empty-row">Nenhuma confirmação de presença encontrada.</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          ) : (
+            <div className="admin-section-panel">
+              <div className="admin-section-header">
+                <h2>Gerenciamento de Presentes</h2>
+                <div style={{ display: 'flex', gap: '15px' }}>
+                  <div className="admin-summary-badge">
+                    Reservados: <strong>{gifts.filter(g => g.status === 'claimed').length}</strong>
+                  </div>
+                  <div className="admin-summary-badge">
+                    Confirmados: <strong>{gifts.filter(g => g.status === 'confirmed').length}</strong>
+                  </div>
+                </div>
+              </div>
+
+              <div className="admin-filters">
+                <div className="admin-filter-tabs">
+                  <button
+                    className={`filter-btn ${adminGiftFilter === 'all' ? 'active' : ''}`}
+                    onClick={() => setAdminGiftFilter('all')}
+                  >
+                    Todos ({gifts.length})
+                  </button>
+                  <button
+                    className={`filter-btn ${adminGiftFilter === 'claimed' ? 'active' : ''}`}
+                    onClick={() => setAdminGiftFilter('claimed')}
+                  >
+                    Reservados ({gifts.filter(g => g.status === 'claimed').length})
+                  </button>
+                  <button
+                    className={`filter-btn ${adminGiftFilter === 'confirmed' ? 'active' : ''}`}
+                    onClick={() => setAdminGiftFilter('confirmed')}
+                  >
+                    Confirmados ({gifts.filter(g => g.status === 'confirmed').length})
+                  </button>
+                  <button
+                    className={`filter-btn ${adminGiftFilter === 'available' ? 'active' : ''}`}
+                    onClick={() => setAdminGiftFilter('available')}
+                  >
+                    Disponíveis ({gifts.filter(g => g.status === 'available').length})
+                  </button>
+                </div>
+              </div>
+
+              <div className="admin-table-container">
+                <table className="admin-table">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Presente</th>
+                      <th>Valor</th>
+                      <th>Status</th>
+                      <th>Comprador</th>
+                      <th>Telefone</th>
+                      <th>Canal</th>
+                      <th>Ações</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {gifts
+                      .filter(g => {
+                        if (adminGiftFilter === 'all') return true;
+                        return g.status === adminGiftFilter;
+                      })
+                      .map(g => (
+                        <tr key={g.id}>
+                          <td>{g.id}</td>
+                          <td><strong>{g.name}</strong></td>
+                          <td>{formatBRL(g.price)}</td>
+                          <td>
+                            <span className={`status-badge status-${g.status}`}>
+                              {g.status === 'available' ? 'Disponível' : g.status === 'claimed' ? 'Reservado' : 'Confirmado'}
+                            </span>
+                          </td>
+                          <td>{g.buyer_name || '-'}</td>
+                          <td>{g.buyer_phone || '-'}</td>
+                          <td>
+                            {g.payment_method === 'pix' ? 'PIX' : g.payment_method === 'external_purchase' ? 'Loja Externa' : '-'}
+                          </td>
+                          <td>
+                            <div style={{ display: 'flex', gap: '8px' }}>
+                              {(g.status === 'claimed' || g.status === 'confirmed') && (
+                                <button
+                                  onClick={() => handleAdminUnclaim(g.id, g.name)}
+                                  className="btn-action btn-release"
+                                  title="Liberar presente (tornar disponível)"
+                                >
+                                  Liberar
+                                </button>
+                              )}
+                              {g.status === 'claimed' && (
+                                <button
+                                  onClick={() => handleAdminConfirm(g.id, g.name)}
+                                  className="btn-action btn-confirm-receive"
+                                  title="Confirmar recebimento do presente"
+                                >
+                                  Confirmar
+                                </button>
+                              )}
+                              {g.status === 'available' && <span style={{ color: 'var(--text-muted)', fontSize: '13px' }}>Sem ações</span>}
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    {gifts.length === 0 && (
+                      <tr>
+                        <td colSpan={8} className="empty-row">Nenhum presente encontrado.</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {toastMessage && (
+          <div className="toast">
+            <Check size={18} color="var(--accent-olive)" />
+            <span>{toastMessage}</span>
+          </div>
+        )}
+      </div>
+    );
+  }
 
   return (
     <>
@@ -1341,10 +1714,75 @@ function App() {
         </div>
         <div className="footer-names">Jacieli & Lucas</div>
         <p className="footer-text">Com carinho, esperamos por você em nosso grande dia.</p>
-        <p className="footer-text" style={{ marginTop: '10px', fontSize: '11px', opacity: 0.6 }}>
+        
+        <button 
+          onClick={() => setIsAdminOpen(true)} 
+          className="btn-admin-footer"
+          style={{ 
+            marginTop: '15px', 
+            fontSize: '12px', 
+            color: 'var(--gold-primary)', 
+            opacity: 0.8,
+            textDecoration: 'underline',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '5px'
+          }}
+        >
+          <Lock size={12} /> Área dos Noivos
+        </button>
+
+        <p className="footer-text" style={{ marginTop: '15px', fontSize: '11px', opacity: 0.6 }}>
           © 2026 Jacieli & Lucas. Todos os direitos reservados.
         </p>
       </footer>
+
+      {/* Admin Login Modal */}
+      {isAdminOpen && (
+        <div className="modal-overlay" onClick={() => setIsAdminOpen(false)}>
+          <div className="modal-content" onClick={e => e.stopPropagation()} style={{ maxWidth: '400px' }}>
+            <button className="modal-close" onClick={() => setIsAdminOpen(false)}>×</button>
+            <div className="modal-header" style={{ textAlign: 'center', marginBottom: '20px' }}>
+              <Lock size={28} color="var(--gold-primary)" style={{ marginBottom: '10px' }} />
+              <h3>Área dos Noivos</h3>
+              <p style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Faça login para gerenciar presentes e convidados</p>
+            </div>
+            
+            <form onSubmit={handleAdminLogin} className="admin-login-form">
+              {adminError && (
+                <div style={{ color: '#d9534f', fontSize: '13px', marginBottom: '15px', textAlign: 'center' }}>
+                  {adminError}
+                </div>
+              )}
+              <div className="form-group" style={{ marginBottom: '15px', textAlign: 'left' }}>
+                <label className="form-label">Usuário</label>
+                <input
+                  type="text"
+                  required
+                  className="form-input"
+                  value={adminUser}
+                  onChange={e => setAdminUser(e.target.value)}
+                  placeholder="Nome de usuário"
+                />
+              </div>
+              <div className="form-group" style={{ marginBottom: '20px', textAlign: 'left' }}>
+                <label className="form-label">Senha</label>
+                <input
+                  type="password"
+                  required
+                  className="form-input"
+                  value={adminPass}
+                  onChange={e => setAdminPass(e.target.value)}
+                  placeholder="••••••••"
+                />
+              </div>
+              <button type="submit" className="btn-submit" style={{ width: '100%' }}>
+                Entrar no Painel
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </>
   );
 }
