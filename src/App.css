@@ -890,13 +890,71 @@
   }
 }
 
+/* Mobile menu toggle */
+.mobile-menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-dark);
+  padding: 5px;
+  transition: transform 0.2s ease;
+}
+
+.mobile-menu-toggle:hover {
+  transform: scale(1.05);
+}
+
 @media (max-width: 768px) {
   .navbar {
     padding: 0 20px;
   }
   
+  .mobile-menu-toggle {
+    display: block;
+    z-index: 1001;
+  }
+
+  .mobile-menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(2px);
+    z-index: 999;
+  }
+
   .nav-links {
-    display: none; /* simple responsive header for demo */
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 280px;
+    height: 100vh;
+    background: white;
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
+    padding: 100px 30px 30px;
+    gap: 20px;
+    transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 1000;
+  }
+
+  .nav-links.open {
+    right: 0;
+  }
+
+  .nav-link {
+    font-size: 16px;
+    width: 100%;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--gold-light);
+  }
+
+  .nav-link::after {
+    display: none; /* Hide bottom line hover effect on mobile */
   }
   
   .timeline::after {

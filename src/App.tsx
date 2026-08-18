@@ -13,7 +13,9 @@ import {
   Trash2,
   Users,
   RefreshCw,
-  Gift
+  Gift,
+  Menu,
+  X
 } from 'lucide-react';
 import './App.css';
 import { generatePixCode } from './utils/pix';
@@ -63,6 +65,7 @@ function App() {
   const [filter, setFilter] = useState<'all' | 'low' | 'mid' | 'high'>('all');
   const [selectedGift, setSelectedGift] = useState<GiftItem | null>(null);
   const [modalTab, setModalTab] = useState<'pix' | 'external'>('pix');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Claim Form States
   const [buyerName, setBuyerName] = useState('');
@@ -1146,12 +1149,27 @@ function App() {
           <img src="/J.png" alt="J & L Monograma" style={{ height: '48px', objectFit: 'contain' }} />
           <span style={{ fontFamily: 'var(--font-serif)', fontSize: '22px', fontWeight: 600 }}>Jacieli & Lucas</span>
         </div>
-        <div className="nav-links">
-          <a href="#inicio" onClick={() => setActiveSection('inicio')} className={`nav-link ${activeSection === 'inicio' ? 'active' : ''}`}>Início</a>
-          <a href="#detalhes" onClick={() => setActiveSection('detalhes')} className={`nav-link ${activeSection === 'detalhes' ? 'active' : ''}`}>Celebração</a>
-          <a href="#historia" onClick={() => setActiveSection('historia')} className={`nav-link ${activeSection === 'historia' ? 'active' : ''}`}>Nossa História</a>
-          <a href="#rsvp" onClick={() => setActiveSection('rsvp')} className={`nav-link ${activeSection === 'rsvp' ? 'active' : ''}`}>RSVP</a>
-          <a href="#presentes" onClick={() => setActiveSection('presentes')} className={`nav-link ${activeSection === 'presentes' ? 'active' : ''}`}>Lista de Presentes</a>
+
+        {/* Mobile menu toggle button */}
+        <button
+          className="mobile-menu-toggle"
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          aria-label="Alternar menu"
+        >
+          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+
+        {/* Overlay backdrop when mobile menu drawer is open */}
+        {isMobileMenuOpen && (
+          <div className="mobile-menu-overlay" onClick={() => setIsMobileMenuOpen(false)} />
+        )}
+
+        <div className={`nav-links ${isMobileMenuOpen ? 'open' : ''}`}>
+          <a href="#inicio" onClick={() => { setActiveSection('inicio'); setIsMobileMenuOpen(false); }} className={`nav-link ${activeSection === 'inicio' ? 'active' : ''}`}>Início</a>
+          <a href="#detalhes" onClick={() => { setActiveSection('detalhes'); setIsMobileMenuOpen(false); }} className={`nav-link ${activeSection === 'detalhes' ? 'active' : ''}`}>Celebração</a>
+          <a href="#historia" onClick={() => { setActiveSection('historia'); setIsMobileMenuOpen(false); }} className={`nav-link ${activeSection === 'historia' ? 'active' : ''}`}>Nossa História</a>
+          <a href="#rsvp" onClick={() => { setActiveSection('rsvp'); setIsMobileMenuOpen(false); }} className={`nav-link ${activeSection === 'rsvp' ? 'active' : ''}`}>RSVP</a>
+          <a href="#presentes" onClick={() => { setActiveSection('presentes'); setIsMobileMenuOpen(false); }} className={`nav-link ${activeSection === 'presentes' ? 'active' : ''}`}>Lista de Presentes</a>
         </div>
       </nav>
 
