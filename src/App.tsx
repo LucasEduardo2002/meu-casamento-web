@@ -545,6 +545,14 @@ function App() {
           status: 'available',
         },
         {
+          id: 56.00,
+          name: 'Aspirador de Pó Vertical 220v',
+          description: 'Aspirador 2 em 1 de 1450W com filtro HEPA.',
+          price: 190.00,
+          image_url: '/Lista-presentes/aspirador-vertical.png',
+          status: 'available',
+        },
+        {
           id: 54.00,
           name: 'operação lua de mel',
           description: 'Ajude os noivos a curtirem a lua de mel com qualquer valor ou cotas.',
@@ -843,7 +851,7 @@ function App() {
 
       const claimedItem = items.find(item => item.status === 'claimed');
       if (claimedItem) return { ...claimedItem, status: 'claimed' } as GiftItem;
-      
+
       const confirmedItem = items.find(item => item.status === 'confirmed');
       if (confirmedItem) return { ...confirmedItem, status: 'confirmed' } as GiftItem;
 
@@ -1820,14 +1828,14 @@ function App() {
         </div>
         <div className="footer-names">Jacieli & Lucas</div>
         <p className="footer-text">Com carinho, esperamos por você em nosso grande dia.</p>
-        
-        <button 
-          onClick={() => setIsAdminOpen(true)} 
+
+        <button
+          onClick={() => setIsAdminOpen(true)}
           className="btn-admin-footer"
-          style={{ 
-            marginTop: '15px', 
-            fontSize: '12px', 
-            color: 'var(--gold-primary)', 
+          style={{
+            marginTop: '15px',
+            fontSize: '12px',
+            color: 'var(--gold-primary)',
             opacity: 0.8,
             textDecoration: 'underline',
             display: 'inline-flex',
@@ -1853,7 +1861,7 @@ function App() {
               <h3>Área dos Noivos</h3>
               <p style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Faça login para gerenciar presentes e convidados</p>
             </div>
-            
+
             <div className="modal-body">
               <form onSubmit={handleAdminLogin} className="admin-login-form">
                 {adminError && (
