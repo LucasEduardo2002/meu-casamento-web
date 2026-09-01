@@ -1245,6 +1245,14 @@ function App() {
                 <Heart size={32} />
               </div>
               <h3 className="details-name">A Celebração Religiosa</h3>
+              <div className="details-img-container">
+                <img
+                  src="/igreja_matriz.jpg"
+                  alt="Matriz de Nossa Senhora de Lourdes - Local da Celebração Religiosa"
+                  className="details-card-img"
+                  loading="lazy"
+                />
+              </div>
               <div className="details-info">
                 <Calendar size={18} />
                 <span>Sábado, 16 de Janeiro de 2027</span>

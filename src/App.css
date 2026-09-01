@@ -274,6 +274,32 @@
   margin-bottom: 15px;
 }
 
+.details-img-container {
+  width: 100%;
+  max-width: 420px;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 0 auto 22px;
+  border: 1px solid var(--gold-light);
+  box-shadow: var(--shadow-sm);
+  background-color: var(--bg-card);
+  position: relative;
+}
+
+.details-card-img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.details-card:hover .details-card-img {
+  transform: scale(1.02);
+}
+
 .details-info {
   font-family: var(--font-sans);
   font-size: 15px;
@@ -981,6 +1007,15 @@
   
   .section-title {
     font-size: 34px;
+  }
+
+  .details-card {
+    padding: 24px 18px;
+  }
+
+  .details-img-container {
+    max-width: 100%;
+    margin-bottom: 18px;
   }
 }
 
