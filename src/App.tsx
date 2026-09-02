@@ -1266,7 +1266,7 @@ function App() {
                 <span>Matriz de Nossa Senhora de Lourdes</span>
               </div>
               <p className="details-description">
-                A cerimônia será realizada na Matriz de Nossa Senhora de Lourdes, na cidade de Campo Redondo/RN. Esperamos você para testemunhar os nossos votos de amor eterno.
+                A cerimônia será realizada na Matriz de Nossa Senhora de Lourdes, na cidade de Campo Redondo/RN. Esperamos você para testemunhar o nosso matrimônio.
               </p>
               <a
                 href="https://www.google.com/maps/search/?api=1&query=Matriz+de+Nossa+Senhora+de+Lourdes+Campo+Redondo+RN"
