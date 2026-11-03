@@ -127,8 +127,15 @@ function App() {
     try {
       const response = await fetch(`${API_BASE_URL}/gifts`);
       if (response.ok) {
-        const data = await response.json();
-        setGifts(data);
+        const data: GiftItem[] = await response.json();
+        const filtered = data.filter(g => {
+          const norm = (g.name || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+          const isGarrafa = norm.includes('garrafa') && norm.includes('termica');
+          const isSilicone = norm.includes('silicone');
+          const isTabuaCarne = norm.includes('tabua') && (norm.includes('carne') || norm.includes('corte') || norm.includes('bambu'));
+          return !isGarrafa && !isSilicone && !isTabuaCarne;
+        });
+        setGifts(filtered);
       } else {
         throw new Error('Erro ao buscar presentes da API.');
       }
@@ -182,14 +189,6 @@ function App() {
           description: 'Conjunto de talheres em aço inox.',
           price: 80.00,
           image_url: '/Lista-presentes/talheres.jpg',
-          status: 'available',
-        },
-        {
-          id: 7.00,
-          name: 'Garrafa Térmica de Café',
-          description: 'Garrafa térmica para café ou chá.',
-          price: 60.00,
-          image_url: '/Lista-presentes/garrafa_de_cafe.png',
           status: 'available',
         },
         {
@@ -254,22 +253,6 @@ function App() {
           description: 'Conjunto de potes organizadores.',
           price: 120.00,
           image_url: '/Lista-presentes/potes_mantimento.png',
-          status: 'available',
-        },
-        {
-          id: 17.00,
-          name: 'Kit de Utensílios de Silicone',
-          description: 'Utensílios de silicone para cozinha.',
-          price: 95.00,
-          image_url: '/Lista-presentes/utensilios_cozinha.png',
-          status: 'available',
-        },
-        {
-          id: 18.00,
-          name: 'Tábua de Corte de Bambu',
-          description: 'Tábua de corte em bambu.',
-          price: 70.00,
-          image_url: '/Lista-presentes/tabua_bambu.png',
           status: 'available',
         },
         {
