@@ -1569,14 +1569,14 @@ function App() {
             <img src="/2.png" alt="Ornamento" style={{ height: '50px', objectFit: 'contain', opacity: 0.8 }} />
           </div>
           <h2 className="section-title">Confirmação de Presença</h2>
-          <p className="section-subtitle">Por favor, busque seu nome na lista e confirme sua presença até 15 de Dezembro de 2026</p>
+          <p className="section-subtitle">Por favor, digite seu nome e confirme sua presença até 15 de Dezembro de 2026</p>
 
           <div className="rsvp-container">
             {!rsvpSubmitted ? (
               <form onSubmit={handleRsvpSubmit}>
                 {/* 1. Seleção do Convidado */}
                 <div className="form-group">
-                  <label className="form-label">Busque seu nome ou família na lista</label>
+                  <label className="form-label">Digite seu nome ou família</label>
                   {!selectedGuest ? (
                     <div className="rsvp-search-container">
                       <div className="rsvp-input-wrapper">
@@ -1584,29 +1584,33 @@ function App() {
                         <input
                           type="text"
                           className="form-input rsvp-search-input"
-                          placeholder="Digite seu nome (ex: João, Cláudia, Tia Cássia...)"
+                          placeholder="Digite seu nome..."
                           value={guestSearchQuery}
                           onChange={(e) => {
                             setGuestSearchQuery(e.target.value);
-                            setIsSearchDropdownOpen(true);
+                            setIsSearchDropdownOpen(e.target.value.trim().length > 0);
                           }}
-                          onFocus={() => setIsSearchDropdownOpen(true)}
+                          onFocus={() => {
+                            if (guestSearchQuery.trim().length > 0) {
+                              setIsSearchDropdownOpen(true);
+                            }
+                          }}
                         />
                       </div>
 
-                      {isSearchDropdownOpen && (
+                      {isSearchDropdownOpen && guestSearchQuery.trim().length > 0 && (
                         <ul className="rsvp-dropdown">
                           {(() => {
                             const normQuery = guestSearchQuery.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
                             const matches = guestsList.filter(g => {
                               const gName = (g.name || g.firstname || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-                              return !normQuery || gName.includes(normQuery);
+                              return gName.includes(normQuery);
                             });
 
                             if (matches.length === 0) {
                               return (
                                 <li className="rsvp-dropdown-empty">
-                                  Nenhum convite encontrado com "{guestSearchQuery}". Tente buscar por outra parte do nome ou verifique a digitação.
+                                  Nenhum convite encontrado com "{guestSearchQuery}".
                                 </li>
                               );
                             }
@@ -1662,7 +1666,7 @@ function App() {
                         onClick={() => {
                           setSelectedGuest(null);
                           setGuestSearchQuery('');
-                          setIsSearchDropdownOpen(true);
+                          setIsSearchDropdownOpen(false);
                         }}
                       >
                         Trocar nome
@@ -1707,7 +1711,7 @@ function App() {
                           <input
                             type="text"
                             required
-                            placeholder="Ex: Apenas Maria não poderá comparecer"
+                            placeholder="Nome de quem não poderá comparecer"
                             className="form-input"
                             value={absentNames}
                             onChange={(e) => setAbsentNames(e.target.value)}
