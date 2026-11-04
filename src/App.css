@@ -481,6 +481,247 @@
   height: 18px;
 }
 
+/* Autocomplete & Guest Selector */
+.rsvp-search-container {
+  position: relative;
+  width: 100%;
+}
+
+.rsvp-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.rsvp-search-icon {
+  position: absolute;
+  left: 14px;
+  color: var(--gold-primary);
+  pointer-events: none;
+}
+
+.rsvp-search-input {
+  padding-left: 42px !important;
+}
+
+.rsvp-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid var(--gold-light);
+  border-radius: 8px;
+  max-height: 240px;
+  overflow-y: auto;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.rsvp-dropdown-item {
+  padding: 12px 16px;
+  font-size: 15px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #f4f4f4;
+  transition: background-color 0.15s ease;
+  color: var(--text-dark);
+}
+
+.rsvp-dropdown-item:last-child {
+  border-bottom: none;
+}
+
+.rsvp-dropdown-item:hover {
+  background-color: rgba(197, 160, 89, 0.1);
+}
+
+.rsvp-dropdown-empty {
+  padding: 16px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+/* Selected Guest Card */
+.rsvp-selected-card {
+  background: rgba(197, 160, 89, 0.08);
+  border: 1px solid var(--gold-primary);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+}
+
+.rsvp-selected-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.rsvp-selected-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--gold-dark);
+}
+
+.rsvp-selected-name {
+  font-size: 18px;
+  font-weight: 600;
+  font-family: var(--font-serif);
+  color: var(--text-dark);
+}
+
+.rsvp-btn-change {
+  background: white;
+  border: 1px solid var(--gold-primary);
+  color: var(--gold-dark);
+  font-size: 12px;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.rsvp-btn-change:hover {
+  background: var(--gold-primary);
+  color: white;
+}
+
+.rsvp-already-confirmed-alert {
+  background: #FFF8E7;
+  border-left: 4px solid var(--gold-primary);
+  padding: 10px 14px;
+  font-size: 13px;
+  color: #7D5D18;
+  border-radius: 4px;
+  margin-top: 10px;
+}
+
+/* Option Cards for Absence Question */
+.rsvp-options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 8px;
+}
+
+@media (max-width: 600px) {
+  .rsvp-options-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.rsvp-option-card {
+  border: 1.5px solid #E0E0E0;
+  border-radius: 8px;
+  padding: 14px 16px;
+  background: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-dark);
+  transition: all 0.2s ease;
+}
+
+.rsvp-option-card:hover {
+  border-color: var(--gold-primary);
+  background: rgba(197, 160, 89, 0.04);
+}
+
+.rsvp-option-card.active {
+  border-color: var(--gold-primary);
+  background: rgba(197, 160, 89, 0.12);
+  color: var(--gold-dark);
+  font-weight: 600;
+  box-shadow: 0 0 0 1px var(--gold-primary);
+}
+
+.rsvp-absent-input-box {
+  margin-top: 15px;
+  background: #FAF8F5;
+  border: 1px dashed var(--gold-primary);
+  border-radius: 8px;
+  padding: 16px;
+  animation: fadeIn 0.3s ease;
+}
+
+/* Admin Status Badges */
+.badge-all-present {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  background: rgba(110, 130, 104, 0.15);
+  color: var(--accent-olive);
+}
+
+.badge-has-absentees {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  background: rgba(217, 83, 79, 0.12);
+  color: #B23B37;
+}
+
+.badge-pending {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  background: #ECEFF1;
+  color: #607D8B;
+}
+
+.admin-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.admin-stat-card {
+  background: white;
+  padding: 14px;
+  border-radius: 8px;
+  border: 1px solid var(--gold-light);
+  text-align: center;
+}
+
+.admin-stat-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--gold-dark);
+  font-family: var(--font-serif);
+}
+
+.admin-stat-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 4px;
+}
+
 .btn-submit {
   width: 100%;
   background: var(--gold-primary);

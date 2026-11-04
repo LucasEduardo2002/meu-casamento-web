@@ -15,7 +15,11 @@ import {
   RefreshCw,
   Gift,
   Menu,
-  X
+  X,
+  Search,
+  UserCheck,
+  UserX,
+  RotateCcw
 } from 'lucide-react';
 import './App.css';
 import { generatePixCode } from './utils/pix';
@@ -34,6 +38,87 @@ interface GiftItem {
   available_quantity?: number;
 }
 
+export interface GuestItem {
+  id: number;
+  name: string;
+  firstname?: string;
+  lastname?: string;
+  confirmed_presence: boolean;
+  has_absentees?: boolean;
+  absent_names?: string | null;
+  phone?: string | null;
+  message?: string | null;
+  confirmed_at?: string | null;
+}
+
+export const DEFAULT_GUESTS_LIST = [
+  'João e Cláudia',
+  'Carol e Jefferson',
+  'Tia Cássia e família',
+  'Tia Kely',
+  'Tia Claudiane',
+  'Tetinha e Diá',
+  'Simony e Sanderilson',
+  'Nilda e Josielton',
+  'Glória e João',
+  'Kennedy',
+  'Eduarda e Djair',
+  'Franciely e Judson',
+  'Matheus Felinto',
+  'Layana e Fabiano',
+  'Diolange Maria e Wanderley',
+  'Maria Beatriz',
+  'Jéssica e Fabrício',
+  'Tio Augusto e família',
+  'Tio Antônio e Rosa',
+  'Tio Zeza e Tia Anita',
+  'Júlio e Meiry Laine',
+  'Tia Fátima',
+  'Déborah e família',
+  'Tia Nadja e família',
+  'Sidney e Adalgiza',
+  'Bruna e família',
+  'Cota e Esposo',
+  'Tia Francisquinha e Tio Abraão',
+  'Surama e Evânio',
+  'Anna Júlia e Eliabe',
+  'Anny e Cláudio',
+  'Juciene',
+  'Gisele e Renan',
+  'Eduarda e Jadyel',
+  'Do Carmo e Geraldo',
+  'Margarida Brilhante',
+  'Catarina',
+  'Manoel e Iraci',
+  'Ceíres e Venâncio',
+  'Ubaldo e família',
+  'Luizinha e família',
+  'Vovó Nazaré e família',
+  'Cacildo e família',
+  'Leonardo e família',
+  'Madrinha Iaponira',
+  'Vitória, Eloyse e Emily',
+  'Marcosuel e família',
+  'Leonardo e Lorena',
+  'André e Larissa',
+  'Gustavo e Letícia',
+  'Ícaro e Júlia',
+  'João Emanuel',
+  'Carlos e Yasmin',
+  'Ryckelmy e família',
+  'Guilherme e Fabiana',
+  'Luan e Camila',
+  'Moisés',
+  'Pedro e Gabriela',
+  'Bruno e Sheila',
+  'Irene Macedo',
+  'Antônio Girorme',
+  'Jaiane e José Carlos',
+  'Tia Luciana',
+  'Tia Graça',
+  'Tio Valderi e Lourdes',
+];
+
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 function App() {
@@ -48,17 +133,18 @@ function App() {
     seconds: 0
   });
 
-  // RSVP Form States
-  const [rsvpName, setRsvpName] = useState('');
-  const [rsvpLastName, setRsvpLastName] = useState('');
-  const [rsvpEmail, setRsvpEmail] = useState('');
+  // RSVP Form States (Lista pré-cadastrada e busca)
+  const [guestsList, setGuestsList] = useState<GuestItem[]>([]);
+  const [selectedGuest, setSelectedGuest] = useState<GuestItem | null>(null);
+  const [guestSearchQuery, setGuestSearchQuery] = useState('');
+  const [isSearchDropdownOpen, setIsSearchDropdownOpen] = useState(false);
+  const [hasAbsentees, setHasAbsentees] = useState<boolean | null>(null);
+  const [absentNames, setAbsentNames] = useState('');
   const [rsvpPhone, setRsvpPhone] = useState('');
-  const [rsvpConfirmed, setRsvpConfirmed] = useState(true);
-  const [rsvpGuestCount, setRsvpGuestCount] = useState(1);
-  const [rsvpCompanions, setRsvpCompanions] = useState('');
   const [rsvpMessage, setRsvpMessage] = useState('');
   const [rsvpSubmitting, setRsvpSubmitting] = useState(false);
   const [rsvpSubmitted, setRsvpSubmitted] = useState(false);
+  const [lastConfirmedGuestName, setLastConfirmedGuestName] = useState('');
 
   // Gifts List States
   const [gifts, setGifts] = useState<GiftItem[]>([]);
@@ -84,9 +170,10 @@ function App() {
   const [adminUser, setAdminUser] = useState('');
   const [adminPass, setAdminPass] = useState('');
   const [adminError, setAdminError] = useState('');
-  const [adminRsvps, setAdminRsvps] = useState<any[]>([]);
+  const [adminRsvps, setAdminRsvps] = useState<GuestItem[]>([]);
   const [adminTab, setAdminTab] = useState<'rsvps' | 'gifts'>('rsvps');
   const [adminSearch, setAdminSearch] = useState('');
+  const [adminRsvpFilter, setAdminRsvpFilter] = useState<'all' | 'confirmed' | 'pending' | 'absentees'>('all');
   const [adminGiftFilter, setAdminGiftFilter] = useState<'all' | 'claimed' | 'confirmed' | 'available'>('all');
   const [isRefreshing, setIsRefreshing] = useState(false);
 
@@ -549,20 +636,42 @@ function App() {
 
   useEffect(() => {
     fetchGifts();
+    fetchRsvps();
   }, []);
 
-  // Fetch RSVPs from Backend
+  // Fetch RSVPs from Backend / Guests
   const fetchRsvps = async () => {
     setIsRefreshing(true);
     try {
       const response = await fetch(`${API_BASE_URL}/users-module`);
       if (response.ok) {
-        const data = await response.json();
+        const data: GuestItem[] = await response.json();
+        setGuestsList(data);
         setAdminRsvps(data);
+      } else {
+        throw new Error('Falha ao buscar lista de convidados');
       }
     } catch (err) {
-      console.error(err);
-      showToast('Erro ao carregar RSVPs.');
+      console.warn('Backend indisponível para carregar convidados. Usando lista local.', err);
+      // Fallback: create offline guest list from DEFAULT_GUESTS_LIST
+      setGuestsList(prev => {
+        if (prev.length > 0) return prev;
+        return DEFAULT_GUESTS_LIST.map((name, index) => ({
+          id: index + 1,
+          name,
+          confirmed_presence: false,
+          has_absentees: false,
+        }));
+      });
+      setAdminRsvps(prev => {
+        if (prev.length > 0) return prev;
+        return DEFAULT_GUESTS_LIST.map((name, index) => ({
+          id: index + 1,
+          name,
+          confirmed_presence: false,
+          has_absentees: false,
+        }));
+      });
     } finally {
       setIsRefreshing(false);
     }
@@ -642,8 +751,31 @@ function App() {
     }
   };
 
+  const handleAdminResetRsvp = async (rsvpId: number, name: string) => {
+    if (!window.confirm(`Deseja realmente redefinir a confirmação de "${name}" para pendente?`)) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/users-module/${rsvpId}/reset`, {
+        method: 'POST',
+      });
+      if (response.ok) {
+        showToast(`Confirmação de "${name}" redefinida para pendente.`);
+        fetchRsvps();
+      } else {
+        throw new Error('Erro ao redefinir RSVP.');
+      }
+    } catch (err) {
+      console.warn('API indisponível, redefinindo localmente.', err);
+      setGuestsList(prev => prev.map(g => g.id === rsvpId ? { ...g, confirmed_presence: false, has_absentees: false, absent_names: null, confirmed_at: null } : g));
+      setAdminRsvps(prev => prev.map(g => g.id === rsvpId ? { ...g, confirmed_presence: false, has_absentees: false, absent_names: null, confirmed_at: null } : g));
+      showToast(`Confirmação de "${name}" redefinida localmente.`);
+    }
+  };
+
   const handleAdminDeleteRsvp = async (rsvpId: number, name: string) => {
-    if (!window.confirm(`Deseja realmente excluir a confirmação de presença de "${name}"?`)) {
+    if (!window.confirm(`Deseja realmente excluir o convite de "${name}"?`)) {
       return;
     }
 
@@ -652,14 +784,16 @@ function App() {
         method: 'DELETE',
       });
       if (response.ok) {
-        showToast(`Confirmação de "${name}" excluída.`);
+        showToast(`Convite de "${name}" excluído.`);
         fetchRsvps();
       } else {
         throw new Error('Erro ao excluir RSVP.');
       }
     } catch (err) {
-      console.error(err);
-      showToast('Erro ao excluir RSVP.');
+      console.warn('API indisponível, excluindo localmente.', err);
+      setGuestsList(prev => prev.filter(g => g.id !== rsvpId));
+      setAdminRsvps(prev => prev.filter(g => g.id !== rsvpId));
+      showToast(`Convite de "${name}" excluído localmente.`);
     }
   };
 
@@ -709,39 +843,62 @@ function App() {
   // RSVP Form Submit
   const handleRsvpSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setRsvpSubmitting(true);
+    if (!selectedGuest) {
+      showToast('Por favor, selecione seu nome na lista de convidados.');
+      return;
+    }
+    if (hasAbsentees === null) {
+      showToast('Por favor, informe se alguém não poderá comparecer.');
+      return;
+    }
+    if (hasAbsentees && !absentNames.trim()) {
+      showToast('Por favor, informe o nome de quem NÃO vai comparecer.');
+      return;
+    }
 
+    setRsvpSubmitting(true);
     const rsvpPayload = {
-      firstname: rsvpName,
-      lastname: rsvpLastName,
-      confirmed_presence: rsvpConfirmed,
-      email: rsvpEmail || null,
+      has_absentees: hasAbsentees,
+      absent_names: hasAbsentees ? absentNames.trim() : null,
       phone: rsvpPhone || null,
-      guest_count: rsvpConfirmed ? rsvpGuestCount : 0,
-      companion_names: rsvpConfirmed ? rsvpCompanions : null,
-      message: rsvpMessage || null
+      message: rsvpMessage || null,
     };
 
     try {
-      const response = await fetch(`${API_BASE_URL}/users-module`, {
+      const response = await fetch(`${API_BASE_URL}/users-module/${selectedGuest.id}/confirm`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(rsvpPayload)
+        body: JSON.stringify(rsvpPayload),
       });
 
       if (response.ok) {
+        const updated = await response.json();
+        setGuestsList(prev => prev.map(g => g.id === selectedGuest.id ? updated : g));
+        setAdminRsvps(prev => prev.map(g => g.id === selectedGuest.id ? updated : g));
+        setLastConfirmedGuestName(selectedGuest.name || selectedGuest.firstname || '');
         setRsvpSubmitted(true);
         showToast('Presença confirmada com sucesso!');
       } else {
         throw new Error('Erro na resposta do servidor.');
       }
     } catch (error) {
-      console.error(error);
-      // Even if API fails, simulate success visually for client-side demo
+      console.warn('API indisponível, registrando localmente.', error);
+      const updatedLocal: GuestItem = {
+        ...selectedGuest,
+        confirmed_presence: true,
+        has_absentees: hasAbsentees,
+        absent_names: hasAbsentees ? absentNames.trim() : null,
+        phone: rsvpPhone || null,
+        message: rsvpMessage || null,
+        confirmed_at: new Date().toISOString(),
+      };
+      setGuestsList(prev => prev.map(g => g.id === selectedGuest.id ? updatedLocal : g));
+      setAdminRsvps(prev => prev.map(g => g.id === selectedGuest.id ? updatedLocal : g));
+      setLastConfirmedGuestName(selectedGuest.name || selectedGuest.firstname || '');
       setRsvpSubmitted(true);
-      showToast('RSVP registrado localmente (API indisponível).');
+      showToast('Presença confirmada localmente.');
     } finally {
       setRsvpSubmitting(false);
     }
@@ -896,32 +1053,81 @@ function App() {
           {adminTab === 'rsvps' ? (
             <div className="admin-section-panel">
               <div className="admin-section-header">
-                <h2>Lista de Convidados Confirmados</h2>
-                <div className="admin-summary-badge">
-                  Total de pessoas confirmadas: <strong>
-                    {adminRsvps.reduce((acc, curr) => acc + (curr.confirmed_presence ? (curr.guest_count || 1) : 0), 0)}
-                  </strong>
+                <h2>Lista de Convidados (RSVP)</h2>
+              </div>
+
+              {/* Summary Stats Grid */}
+              <div className="admin-summary-grid">
+                <div className="admin-stat-card">
+                  <div className="admin-stat-value">{adminRsvps.length}</div>
+                  <div className="admin-stat-label">Total de Convites</div>
+                </div>
+                <div className="admin-stat-card">
+                  <div className="admin-stat-value" style={{ color: 'var(--accent-olive)' }}>
+                    {adminRsvps.filter(r => r.confirmed_presence).length}
+                  </div>
+                  <div className="admin-stat-label">Confirmados</div>
+                </div>
+                <div className="admin-stat-card">
+                  <div className="admin-stat-value" style={{ color: '#B23B37' }}>
+                    {adminRsvps.filter(r => r.confirmed_presence && r.has_absentees).length}
+                  </div>
+                  <div className="admin-stat-label">Com Ausentes</div>
+                </div>
+                <div className="admin-stat-card">
+                  <div className="admin-stat-value" style={{ color: '#78909C' }}>
+                    {adminRsvps.filter(r => !r.confirmed_presence).length}
+                  </div>
+                  <div className="admin-stat-label">Pendentes</div>
                 </div>
               </div>
 
-              <div className="admin-filters">
+              <div className="admin-filters" style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'center' }}>
                 <input
                   type="text"
-                  placeholder="Pesquisar por nome..."
+                  placeholder="Pesquisar convite..."
                   className="admin-search-input"
+                  style={{ flex: '1', minWidth: '220px' }}
                   value={adminSearch}
                   onChange={e => setAdminSearch(e.target.value)}
                 />
+
+                <div className="admin-filter-buttons" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                  <button
+                    className={`btn-filter ${adminRsvpFilter === 'all' ? 'active' : ''}`}
+                    onClick={() => setAdminRsvpFilter('all')}
+                  >
+                    Todos ({adminRsvps.length})
+                  </button>
+                  <button
+                    className={`btn-filter ${adminRsvpFilter === 'confirmed' ? 'active' : ''}`}
+                    onClick={() => setAdminRsvpFilter('confirmed')}
+                  >
+                    Confirmados ({adminRsvps.filter(r => r.confirmed_presence).length})
+                  </button>
+                  <button
+                    className={`btn-filter ${adminRsvpFilter === 'absentees' ? 'active' : ''}`}
+                    onClick={() => setAdminRsvpFilter('absentees')}
+                  >
+                    Com Ausentes ({adminRsvps.filter(r => r.confirmed_presence && r.has_absentees).length})
+                  </button>
+                  <button
+                    className={`btn-filter ${adminRsvpFilter === 'pending' ? 'active' : ''}`}
+                    onClick={() => setAdminRsvpFilter('pending')}
+                  >
+                    Pendentes ({adminRsvps.filter(r => !r.confirmed_presence).length})
+                  </button>
+                </div>
               </div>
 
               <div className="admin-table-container">
                 <table className="admin-table">
                   <thead>
                     <tr>
-                      <th>Nome</th>
-                      <th>Presença</th>
-                      <th>Acompanhantes (Total)</th>
-                      <th>Nomes dos Acompanhantes</th>
+                      <th>ID</th>
+                      <th>Convite / Família</th>
+                      <th>Status</th>
+                      <th>Comparecimento</th>
                       <th>Contato</th>
                       <th>Mensagem</th>
                       <th>Data</th>
@@ -931,46 +1137,72 @@ function App() {
                   <tbody>
                     {adminRsvps
                       .filter(rsvp => {
-                        const fullName = `${rsvp.firstname} ${rsvp.lastname}`.toLowerCase();
-                        return fullName.includes(adminSearch.toLowerCase());
+                        const name = (rsvp.name || `${rsvp.firstname || ''} ${rsvp.lastname || ''}`).toLowerCase();
+                        const matchesSearch = name.includes(adminSearch.toLowerCase());
+                        if (!matchesSearch) return false;
+
+                        if (adminRsvpFilter === 'confirmed') return rsvp.confirmed_presence;
+                        if (adminRsvpFilter === 'pending') return !rsvp.confirmed_presence;
+                        if (adminRsvpFilter === 'absentees') return rsvp.confirmed_presence && rsvp.has_absentees;
+                        return true;
                       })
                       .map(rsvp => (
                         <tr key={rsvp.id}>
-                          <td><strong>{rsvp.firstname} {rsvp.lastname}</strong></td>
+                          <td>{rsvp.id}</td>
+                          <td><strong>{rsvp.name || `${rsvp.firstname || ''} ${rsvp.lastname || ''}`.trim()}</strong></td>
                           <td>
                             <span className={`status-badge ${rsvp.confirmed_presence ? 'status-confirmed' : 'status-declined'}`}>
-                              {rsvp.confirmed_presence ? 'Confirmado' : 'Ausente'}
+                              {rsvp.confirmed_presence ? 'Confirmado' : 'Pendente'}
                             </span>
                           </td>
-                          <td>{rsvp.confirmed_presence ? rsvp.guest_count : 0}</td>
-                          <td style={{ fontSize: '13px' }}>
-                            {rsvp.companion_names || '-'}
+                          <td>
+                            {rsvp.confirmed_presence ? (
+                              rsvp.has_absentees ? (
+                                <span className="badge-has-absentees" title={rsvp.absent_names || ''}>
+                                  Não vai: <strong>{rsvp.absent_names || 'Não especificado'}</strong>
+                                </span>
+                              ) : (
+                                <span className="badge-all-present">Todos irão</span>
+                              )
+                            ) : (
+                              <span className="badge-pending">Aguardando resposta</span>
+                            )}
                           </td>
                           <td style={{ fontSize: '13px' }}>
-                            {rsvp.email && <div>{rsvp.email}</div>}
-                            {rsvp.phone && <div>{rsvp.phone}</div>}
-                            {!rsvp.email && !rsvp.phone && '-'}
+                            {rsvp.phone ? rsvp.phone : '-'}
                           </td>
-                          <td className="admin-table-message" title={rsvp.message}>
+                          <td className="admin-table-message" title={rsvp.message || ''}>
                             {rsvp.message || '-'}
                           </td>
                           <td style={{ fontSize: '12px' }}>
                             {rsvp.confirmed_at ? new Date(rsvp.confirmed_at).toLocaleDateString('pt-BR') : '-'}
                           </td>
                           <td>
-                            <button
-                              onClick={() => handleAdminDeleteRsvp(rsvp.id, `${rsvp.firstname} ${rsvp.lastname}`)}
-                              className="btn-action btn-delete"
-                              title="Remover RSVP"
-                            >
-                              <Trash2 size={16} />
-                            </button>
+                            <div style={{ display: 'flex', gap: '6px' }}>
+                              {rsvp.confirmed_presence && (
+                                <button
+                                  onClick={() => handleAdminResetRsvp(rsvp.id, rsvp.name || rsvp.firstname || '')}
+                                  className="btn-action"
+                                  style={{ color: '#E65100', borderColor: '#FFE0B2', background: '#FFF8E1' }}
+                                  title="Redefinir para pendente"
+                                >
+                                  <RotateCcw size={15} />
+                                </button>
+                              )}
+                              <button
+                                onClick={() => handleAdminDeleteRsvp(rsvp.id, rsvp.name || rsvp.firstname || '')}
+                                className="btn-action btn-delete"
+                                title="Remover Convite"
+                              >
+                                <Trash2 size={15} />
+                              </button>
+                            </div>
                           </td>
                         </tr>
                       ))}
                     {adminRsvps.length === 0 && (
                       <tr>
-                        <td colSpan={8} className="empty-row">Nenhuma confirmação de presença encontrada.</td>
+                        <td colSpan={8} className="empty-row">Nenhum convite encontrado.</td>
                       </tr>
                     )}
                   </tbody>
@@ -1337,130 +1569,184 @@ function App() {
             <img src="/2.png" alt="Ornamento" style={{ height: '50px', objectFit: 'contain', opacity: 0.8 }} />
           </div>
           <h2 className="section-title">Confirmação de Presença</h2>
-          <p className="section-subtitle">Por favor, confirme sua presença até 15 de Dezembro de 2026</p>
+          <p className="section-subtitle">Por favor, busque seu nome na lista e confirme sua presença até 15 de Dezembro de 2026</p>
 
           <div className="rsvp-container">
             {!rsvpSubmitted ? (
               <form onSubmit={handleRsvpSubmit}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
-                  <div className="form-group">
-                    <label className="form-label">Nome</label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="Ex: Lucas"
-                      className="form-input"
-                      value={rsvpName}
-                      onChange={(e) => setRsvpName(e.target.value)}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label className="form-label">Sobrenome</label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="Ex: Medeiros"
-                      className="form-input"
-                      value={rsvpLastName}
-                      onChange={(e) => setRsvpLastName(e.target.value)}
-                    />
-                  </div>
-                </div>
-
+                {/* 1. Seleção do Convidado */}
                 <div className="form-group">
-                  <label className="form-label">E-mail</label>
-                  <input
-                    type="email"
-                    placeholder="seu.email@exemplo.com"
-                    className="form-input"
-                    value={rsvpEmail}
-                    onChange={(e) => setRsvpEmail(e.target.value)}
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label className="form-label">Telefone de Contato</label>
-                  <input
-                    type="tel"
-                    placeholder="(84) 99999-9999"
-                    className="form-input"
-                    value={rsvpPhone}
-                    onChange={(e) => setRsvpPhone(e.target.value)}
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label className="form-label">Você comparecerá?</label>
-                  <div className="form-radio-group">
-                    <label className="form-radio-label">
-                      <input
-                        type="radio"
-                        name="confirmed"
-                        className="form-radio-input"
-                        checked={rsvpConfirmed === true}
-                        onChange={() => setRsvpConfirmed(true)}
-                      />
-                      Sim, irei comparecer!
-                    </label>
-                    <label className="form-radio-label">
-                      <input
-                        type="radio"
-                        name="confirmed"
-                        className="form-radio-input"
-                        checked={rsvpConfirmed === false}
-                        onChange={() => setRsvpConfirmed(false)}
-                      />
-                      Não poderei comparecer.
-                    </label>
-                  </div>
-                </div>
-
-                {rsvpConfirmed && (
-                  <>
-                    <div className="form-group">
-                      <label className="form-label">Quantidade de Acompanhantes (incluindo você)</label>
-                      <select
-                        className="form-input"
-                        value={rsvpGuestCount}
-                        onChange={(e) => setRsvpGuestCount(Number(e.target.value))}
-                      >
-                        <option value={1}>1 pessoa</option>
-                        <option value={2}>2 pessoas</option>
-                        <option value={3}>3 pessoas</option>
-                        <option value={4}>4 pessoas</option>
-                        <option value={5}>5 pessoas</option>
-                      </select>
-                    </div>
-
-                    {rsvpGuestCount > 1 && (
-                      <div className="form-group">
-                        <label className="form-label">Nome Completo dos Acompanhantes</label>
-                        <textarea
-                          rows={2}
-                          placeholder="Nomes separados por vírgula"
-                          className="form-input"
-                          value={rsvpCompanions}
-                          onChange={(e) => setRsvpCompanions(e.target.value)}
+                  <label className="form-label">Busque seu nome ou família na lista</label>
+                  {!selectedGuest ? (
+                    <div className="rsvp-search-container">
+                      <div className="rsvp-input-wrapper">
+                        <Search size={18} className="rsvp-search-icon" />
+                        <input
+                          type="text"
+                          className="form-input rsvp-search-input"
+                          placeholder="Digite seu nome (ex: João, Cláudia, Tia Cássia...)"
+                          value={guestSearchQuery}
+                          onChange={(e) => {
+                            setGuestSearchQuery(e.target.value);
+                            setIsSearchDropdownOpen(true);
+                          }}
+                          onFocus={() => setIsSearchDropdownOpen(true)}
                         />
                       </div>
-                    )}
-                  </>
-                )}
 
-                <div className="form-group">
-                  <label className="form-label">Deixe uma mensagem para os noivos (Opcional)</label>
-                  <textarea
-                    rows={3}
-                    placeholder="Deseje felicidades aos noivos..."
-                    className="form-input"
-                    value={rsvpMessage}
-                    onChange={(e) => setRsvpMessage(e.target.value)}
-                  />
+                      {isSearchDropdownOpen && (
+                        <ul className="rsvp-dropdown">
+                          {(() => {
+                            const normQuery = guestSearchQuery.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+                            const matches = guestsList.filter(g => {
+                              const gName = (g.name || g.firstname || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+                              return !normQuery || gName.includes(normQuery);
+                            });
+
+                            if (matches.length === 0) {
+                              return (
+                                <li className="rsvp-dropdown-empty">
+                                  Nenhum convite encontrado com "{guestSearchQuery}". Tente buscar por outra parte do nome ou verifique a digitação.
+                                </li>
+                              );
+                            }
+
+                            return matches.map(g => (
+                              <li
+                                key={g.id}
+                                className="rsvp-dropdown-item"
+                                onClick={() => {
+                                  setSelectedGuest(g);
+                                  setGuestSearchQuery(g.name || g.firstname || '');
+                                  setIsSearchDropdownOpen(false);
+                                  if (g.confirmed_presence) {
+                                    setHasAbsentees(g.has_absentees ?? false);
+                                    setAbsentNames(g.absent_names || '');
+                                  } else {
+                                    setHasAbsentees(null);
+                                    setAbsentNames('');
+                                  }
+                                  if (g.phone) setRsvpPhone(g.phone);
+                                  if (g.message) setRsvpMessage(g.message);
+                                }}
+                              >
+                                <span><strong>{g.name || g.firstname}</strong></span>
+                                {g.confirmed_presence ? (
+                                  <span className="badge-all-present" style={{ fontSize: '11px' }}>
+                                    <Check size={12} style={{ display: 'inline', marginRight: '3px' }} />
+                                    Já confirmado
+                                  </span>
+                                ) : (
+                                  <span style={{ fontSize: '12px', color: 'var(--gold-dark)' }}>Selecionar</span>
+                                )}
+                              </li>
+                            ));
+                          })()}
+                        </ul>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="rsvp-selected-card">
+                      <div className="rsvp-selected-info">
+                        <span className="rsvp-selected-label">Convite Selecionado</span>
+                        <span className="rsvp-selected-name">{selectedGuest.name || selectedGuest.firstname}</span>
+                        {selectedGuest.confirmed_presence && (
+                          <div className="rsvp-already-confirmed-alert">
+                            ✨ Este convite já foi confirmado anteriormente! Você pode atualizar as informações abaixo e confirmar novamente se desejar.
+                          </div>
+                        )}
+                      </div>
+                      <button
+                        type="button"
+                        className="rsvp-btn-change"
+                        onClick={() => {
+                          setSelectedGuest(null);
+                          setGuestSearchQuery('');
+                          setIsSearchDropdownOpen(true);
+                        }}
+                      >
+                        Trocar nome
+                      </button>
+                    </div>
+                  )}
                 </div>
 
-                <button type="submit" disabled={rsvpSubmitting} className="btn-submit">
-                  {rsvpSubmitting ? 'Enviando...' : 'Confirmar Presença'}
-                </button>
+                {/* 2. Pergunta obrigatória de comparecimento */}
+                {selectedGuest && (
+                  <>
+                    <div className="form-group" style={{ marginTop: '20px' }}>
+                      <label className="form-label">Alguém não poderá comparecer?</label>
+                      <div className="rsvp-options-grid">
+                        <button
+                          type="button"
+                          className={`rsvp-option-card ${hasAbsentees === false ? 'active' : ''}`}
+                          onClick={() => {
+                            setHasAbsentees(false);
+                            setAbsentNames('');
+                          }}
+                        >
+                          <UserCheck size={20} color={hasAbsentees === false ? 'var(--gold-primary)' : 'var(--text-muted)'} />
+                          <span>Todos irão comparecer</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          className={`rsvp-option-card ${hasAbsentees === true ? 'active' : ''}`}
+                          onClick={() => setHasAbsentees(true)}
+                        >
+                          <UserX size={20} color={hasAbsentees === true ? '#B23B37' : 'var(--text-muted)'} />
+                          <span>Sim (alguém não poderá)</span>
+                        </button>
+                      </div>
+
+                      {hasAbsentees === true && (
+                        <div className="rsvp-absent-input-box">
+                          <label className="form-label" style={{ color: '#B23B37' }}>
+                            Nome de quem NÃO vai comparecer:
+                          </label>
+                          <input
+                            type="text"
+                            required
+                            placeholder="Ex: Apenas Maria não poderá comparecer"
+                            className="form-input"
+                            value={absentNames}
+                            onChange={(e) => setAbsentNames(e.target.value)}
+                          />
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="form-group">
+                      <label className="form-label">Telefone de Contato (WhatsApp - Opcional)</label>
+                      <input
+                        type="tel"
+                        placeholder="(84) 99999-9999"
+                        className="form-input"
+                        value={rsvpPhone}
+                        onChange={(e) => setRsvpPhone(e.target.value)}
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label className="form-label">Deixe uma mensagem para os noivos (Opcional)</label>
+                      <textarea
+                        rows={3}
+                        placeholder="Deseje felicidades aos noivos..."
+                        className="form-input"
+                        value={rsvpMessage}
+                        onChange={(e) => setRsvpMessage(e.target.value)}
+                      />
+                    </div>
+
+                    <button
+                      type="submit"
+                      disabled={rsvpSubmitting || hasAbsentees === null || (hasAbsentees === true && !absentNames.trim())}
+                      className="btn-submit"
+                    >
+                      {rsvpSubmitting ? 'Confirmando...' : 'Confirmar Presença'}
+                    </button>
+                  </>
+                )}
               </form>
             ) : (
               <div className="success-card">
@@ -1468,14 +1754,33 @@ function App() {
                   <Heart size={64} fill="var(--accent-rose)" color="var(--gold-primary)" />
                 </div>
                 <h3 className="success-title">Obrigado pela confirmação!</h3>
-                <p className="success-text">
-                  {rsvpConfirmed
-                    ? 'Ficamos imensamente felizes em saber que você celebrará esse grande dia conosco.'
-                    : 'Ficamos tristes por você não poder comparecer, mas agradecemos o carinho e a resposta.'
-                  }
+                <p className="success-text" style={{ fontSize: '16px', lineHeight: '1.6', marginTop: '10px' }}>
+                  {hasAbsentees ? (
+                    <>
+                      Registramos com carinho a presença do convite <strong>{lastConfirmedGuestName}</strong>.<br />
+                      Ficamos cientes de que <em>{absentNames}</em> não poderá comparecer. Agradecemos imensamente a resposta e o carinho!
+                    </>
+                  ) : (
+                    <>
+                      Confirmamos a presença de todos de <strong>{lastConfirmedGuestName}</strong>!<br />
+                      Ficamos imensamente felizes em saber que vocês celebrarão esse grande dia conosco!
+                    </>
+                  )}
                 </p>
-                <button onClick={() => setRsvpSubmitted(false)} className="btn-reset">
-                  Fazer outra confirmação ou atualizar dados
+                <button
+                  onClick={() => {
+                    setRsvpSubmitted(false);
+                    setSelectedGuest(null);
+                    setGuestSearchQuery('');
+                    setHasAbsentees(null);
+                    setAbsentNames('');
+                    setRsvpPhone('');
+                    setRsvpMessage('');
+                  }}
+                  className="btn-reset"
+                  style={{ marginTop: '20px' }}
+                >
+                  Fazer outra confirmação ou atualizar
                 </button>
               </div>
             )}
