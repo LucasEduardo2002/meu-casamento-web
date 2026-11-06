@@ -111,12 +111,13 @@ export const DEFAULT_GUESTS_LIST = [
   'Moisés',
   'Pedro e Gabriela',
   'Bruno e Sheila',
-  'Irene Macedo',
+  'Tia Nilda',
   'Antônio Girorme',
   'Jaiane e José Carlos',
   'Tia Luciana',
   'Tia Graça',
   'Tio Valderi e Lourdes',
+  'Tia Socorro e Danielle',
 ];
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
