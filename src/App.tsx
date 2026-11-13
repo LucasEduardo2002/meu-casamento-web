@@ -83,7 +83,7 @@ export const DEFAULT_GUESTS_LIST = [
   'Surama e Evânio',
   'Anna Júlia e Eliabe',
   'Anny e Cláudio',
-  'Juciene',
+  'Juciene e Meirinho',
   'Gisele e Renan',
   'Eduarda e Jadyel',
   'Do Carmo e Geraldo',
