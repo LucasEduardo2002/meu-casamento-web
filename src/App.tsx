@@ -19,7 +19,8 @@ import {
   Search,
   UserCheck,
   UserX,
-  RotateCcw
+  RotateCcw,
+  MessageSquare
 } from 'lucide-react';
 import './App.css';
 import { generatePixCode } from './utils/pix';
@@ -178,6 +179,7 @@ function App() {
   const [adminSearch, setAdminSearch] = useState('');
   const [adminRsvpFilter, setAdminRsvpFilter] = useState<'all' | 'confirmed' | 'pending' | 'absentees'>('all');
   const [adminGiftFilter, setAdminGiftFilter] = useState<'all' | 'claimed' | 'confirmed' | 'available'>('all');
+  const [selectedAdminMessageGuest, setSelectedAdminMessageGuest] = useState<GuestItem | null>(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
   // Constants
@@ -1174,8 +1176,36 @@ function App() {
                           <td style={{ fontSize: '13px' }}>
                             {rsvp.phone ? rsvp.phone : '-'}
                           </td>
-                          <td className="admin-table-message" title={rsvp.message || ''}>
-                            {rsvp.message || '-'}
+                          <td
+                            className={`admin-table-message ${rsvp.message ? 'clickable' : ''}`}
+                            title={rsvp.message ? 'Clique para ver a mensagem completa' : ''}
+                            onClick={() => {
+                              if (rsvp.message && rsvp.message.trim()) {
+                                setSelectedAdminMessageGuest(rsvp);
+                              }
+                            }}
+                          >
+                            {rsvp.message && rsvp.message.trim() ? (
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>
+                                  {rsvp.message}
+                                </span>
+                                <button
+                                  type="button"
+                                  className="btn-view-message"
+                                  title="Ver mensagem completa"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setSelectedAdminMessageGuest(rsvp);
+                                  }}
+                                >
+                                  <MessageSquare size={12} />
+                                  <span>Ler</span>
+                                </button>
+                              </div>
+                            ) : (
+                              <span style={{ color: 'var(--text-muted)' }}>-</span>
+                            )}
                           </td>
                           <td style={{ fontSize: '12px' }}>
                             {rsvp.confirmed_at ? new Date(rsvp.confirmed_at).toLocaleDateString('pt-BR') : '-'}
@@ -2206,6 +2236,81 @@ function App() {
                   Entrar no Painel
                 </button>
               </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de Leitura da Mensagem Completa */}
+      {selectedAdminMessageGuest && (
+        <div className="modal-overlay" onClick={() => setSelectedAdminMessageGuest(null)}>
+          <div className="modal-content" onClick={e => e.stopPropagation()} style={{ maxWidth: '540px' }}>
+            <button className="modal-close" onClick={() => setSelectedAdminMessageGuest(null)}>×</button>
+
+            <div className="modal-header">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
+                <MessageSquare size={24} color="var(--gold-primary)" />
+                <h3 className="modal-title" style={{ margin: 0, fontSize: '22px' }}>Mensagem aos Noivos</h3>
+              </div>
+              <p className="modal-subtitle" style={{ margin: 0 }}>
+                Enviada por <strong>{selectedAdminMessageGuest.name || `${selectedAdminMessageGuest.firstname || ''} ${selectedAdminMessageGuest.lastname || ''}`.trim()}</strong>
+                {selectedAdminMessageGuest.confirmed_at && (
+                  <span> em {new Date(selectedAdminMessageGuest.confirmed_at).toLocaleDateString('pt-BR')}</span>
+                )}
+              </p>
+            </div>
+
+            <div className="modal-body">
+              {selectedAdminMessageGuest.phone && (
+                <div style={{ marginBottom: '14px', fontSize: '13px', color: 'var(--text-muted)' }}>
+                  <strong>Contato:</strong> {selectedAdminMessageGuest.phone}
+                </div>
+              )}
+
+              <div
+                style={{
+                  background: 'var(--bg-secondary)',
+                  border: '1px solid var(--gold-light)',
+                  borderRadius: '10px',
+                  padding: '20px',
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: '15px',
+                  lineHeight: '1.7',
+                  color: 'var(--text-dark)',
+                  whiteSpace: 'pre-wrap',
+                  wordBreak: 'break-word',
+                  maxHeight: '340px',
+                  overflowY: 'auto',
+                  fontStyle: 'italic',
+                }}
+              >
+                "{selectedAdminMessageGuest.message}"
+              </div>
+
+              <div style={{ marginTop: '24px', display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (selectedAdminMessageGuest.message) {
+                      navigator.clipboard.writeText(selectedAdminMessageGuest.message);
+                      showToast('Mensagem copiada para a área de transferência!');
+                    }
+                  }}
+                  className="btn-action"
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '8px 14px', fontSize: '13px' }}
+                  title="Copiar mensagem"
+                >
+                  <Copy size={15} /> Copiar texto
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSelectedAdminMessageGuest(null)}
+                  className="btn-primary"
+                  style={{ padding: '8px 22px' }}
+                >
+                  Fechar
+                </button>
+              </div>
             </div>
           </div>
         </div>

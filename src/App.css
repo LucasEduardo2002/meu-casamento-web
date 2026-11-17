@@ -1511,6 +1511,39 @@
   text-overflow: ellipsis;
 }
 
+.admin-table-message.clickable {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.admin-table-message.clickable:hover {
+  background-color: rgba(197, 160, 89, 0.08);
+}
+
+.btn-view-message {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(197, 160, 89, 0.15);
+  color: var(--gold-dark);
+  border: 1px solid var(--gold-light);
+  border-radius: 4px;
+  padding: 3px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  font-family: var(--font-sans);
+}
+
+.btn-view-message:hover {
+  background: var(--gold-primary);
+  color: white;
+  border-color: var(--gold-primary);
+  transform: translateY(-1px);
+}
+
 .empty-row {
   text-align: center;
   color: var(--text-muted);
