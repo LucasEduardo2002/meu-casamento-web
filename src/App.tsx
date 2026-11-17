@@ -529,7 +529,7 @@ function App() {
           id: 43.00,
           name: 'Kit 3 Formas Para Bolo Torta Antiaderente',
           description: 'Conjunto com 3 formas antiaderentes de tamanhos variados para bolo e torta.',
-          price: 52.50,
+          price: 70.00,
           image_url: '/Lista-presentes/formas_bolo_antiaderente.png',
           status: 'available',
         },
