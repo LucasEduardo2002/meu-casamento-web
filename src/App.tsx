@@ -121,6 +121,7 @@ export const DEFAULT_GUESTS_LIST = [
   'Tia Socorro e família',
   'Márcia e Zé',
   'Milena Araújo',
+  'Tia Gorete',
 ];
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
