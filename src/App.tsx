@@ -526,14 +526,6 @@ function App() {
           status: 'available',
         },
         {
-          id: 43.00,
-          name: 'Kit 3 Formas Para Bolo Torta Antiaderente',
-          description: 'Conjunto com 3 formas antiaderentes de tamanhos variados para bolo e torta.',
-          price: 70.00,
-          image_url: '/Lista-presentes/formas_bolo_antiaderente.png',
-          status: 'available',
-        },
-        {
           id: 44.00,
           name: 'Kit Jarra de Vidro e Copos De Vidro',
           description: 'Jogo com jarra e copos de vidro trabalhados para servir bebidas.',
