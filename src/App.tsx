@@ -335,9 +335,9 @@ function App() {
         },
         {
           id: 15.00,
-          name: 'Jogo de Assadeiras e Travessas',
-          description: 'Travessas de vidro para assar e servir.',
-          price: 189.00,
+          name: 'Jogo Assadeiras 3 Peças Antiaderente',
+          description: '',
+          price: 160.00,
           image_url: '/Lista-presentes/assadeira.png',
           status: 'available',
         },
