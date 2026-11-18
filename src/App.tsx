@@ -575,10 +575,10 @@ function App() {
         },
         {
           id: 50.00,
-          name: 'Porta Temperos Giratório 360°',
-          description: 'Organizador giratório 360 graus para temperos e condimentos na cozinha.',
-          price: 130.00,
-          image_url: '/Lista-presentes/porta_temperos_giratorio.jpg',
+          name: 'Tapete para Sala 2 x 2,5',
+          description: 'Tapete para sala elegante e confortável no tamanho 2,00m x 2,50m.',
+          price: 180.00,
+          image_url: '/Lista-presentes/tapete_sala.png',
           status: 'available',
         },
         {
