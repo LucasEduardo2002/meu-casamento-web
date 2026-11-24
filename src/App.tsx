@@ -21,9 +21,7 @@ import {
   UserCheck,
   UserX,
   RotateCcw,
-  MessageSquare,
-  ChevronLeft,
-  ChevronRight
+  MessageSquare
 } from 'lucide-react';
 import './App.css';
 import { generatePixCode } from './utils/pix';
@@ -174,32 +172,7 @@ function App() {
     return () => clearInterval(timer);
   }, [isHeroVisible]);
 
-  const handleNextSlide = () => {
-    setCurrentSlide(prev => (prev + 1) % HERO_SLIDES.length);
-  };
-
-  const handlePrevSlide = () => {
-    setCurrentSlide(prev => (prev - 1 + HERO_SLIDES.length) % HERO_SLIDES.length);
-  };
-
-  const touchStartXRef = useRef<number | null>(null);
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartXRef.current = e.touches[0].clientX;
-  };
-
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    if (touchStartXRef.current === null) return;
-    const diff = e.changedTouches[0].clientX - touchStartXRef.current;
-    if (Math.abs(diff) > 40) {
-      if (diff < 0) {
-        handleNextSlide();
-      } else {
-        handlePrevSlide();
-      }
-    }
-    touchStartXRef.current = null;
-  };
+  
 
 
 
@@ -1612,10 +1585,6 @@ function App() {
             <div
               className="hero-img-wrapper hero-carousel-wrapper"
               ref={heroCarouselRef}
-              onClick={handleNextSlide}
-              onTouchStart={handleTouchStart}
-              onTouchEnd={handleTouchEnd}
-              title="Clique para avançar a foto"
             >
               {HERO_SLIDES.map((src, idx) => (
                 <img
@@ -1626,44 +1595,6 @@ function App() {
                   loading={idx === 0 ? 'eager' : 'lazy'}
                 />
               ))}
-
-              <button
-                type="button"
-                className="hero-carousel-arrow hero-carousel-prev"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handlePrevSlide();
-                }}
-                aria-label="Foto anterior"
-                title="Foto anterior"
-              >
-                <ChevronLeft size={22} />
-              </button>
-
-              <button
-                type="button"
-                className="hero-carousel-arrow hero-carousel-next"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleNextSlide();
-                }}
-                aria-label="Próxima foto"
-                title="Próxima foto"
-              >
-                <ChevronRight size={22} />
-              </button>
-
-              <div className="hero-carousel-dots" onClick={(e) => e.stopPropagation()}>
-                {HERO_SLIDES.map((_, dotIdx) => (
-                  <button
-                    key={dotIdx}
-                    type="button"
-                    className={`hero-carousel-dot ${dotIdx === currentSlide ? 'active' : ''}`}
-                    onClick={() => setCurrentSlide(dotIdx)}
-                    aria-label={`Ir para foto ${dotIdx + 1}`}
-                  />
-                ))}
-              </div>
             </div>
           </div>
         </section>
