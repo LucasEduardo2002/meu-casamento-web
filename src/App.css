@@ -1670,3 +1670,110 @@
   }
 }
 
+
+
+/* Hero Carousel Styles */
+.hero-carousel-wrapper {
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  background-color: var(--bg-card);
+}
+
+.hero-carousel-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: scale(1.02);
+  pointer-events: none;
+}
+
+.hero-carousel-slide.active {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+.hero-carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(4px);
+  border: 1px solid var(--gold-light);
+  color: var(--gold-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: all 0.3s ease;
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.hero-carousel-wrapper:hover .hero-carousel-arrow {
+  opacity: 1;
+}
+
+.hero-carousel-arrow:hover {
+  background: var(--gold-primary);
+  color: #ffffff;
+  border-color: var(--gold-primary);
+  transform: translateY(-50%) scale(1.08);
+}
+
+.hero-carousel-prev {
+  left: 12px;
+}
+
+.hero-carousel-next {
+  right: 12px;
+}
+
+.hero-carousel-dots {
+  position: absolute;
+  bottom: 14px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  z-index: 10;
+  padding: 6px 12px;
+}
+
+.hero-carousel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.3s ease;
+}
+
+.hero-carousel-dot.active {
+  background: var(--gold-primary);
+  width: 22px;
+  border-radius: 4px;
+  border-color: var(--gold-primary);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 768px) {
+  .hero-carousel-arrow {
+    opacity: 0.85;
+    width: 34px;
+    height: 34px;
+  }
+}

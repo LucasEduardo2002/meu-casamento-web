@@ -1,4 +1,4 @@
-import React, {  useState, useEffect  } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import {
   Heart,
@@ -21,7 +21,9 @@ import {
   UserCheck,
   UserX,
   RotateCcw,
-  MessageSquare
+  MessageSquare,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
 import './App.css';
 import { generatePixCode } from './utils/pix';
@@ -127,9 +129,59 @@ export const DEFAULT_GUESTS_LIST = [
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
+const HERO_SLIDES = [
+  '/slide/J&L-ens-36.jpg',
+  '/slide/J&L-ens-37.jpg',
+  '/slide/J&L-ens-53.jpg',
+  '/slide/J&L-ens-124.jpg',
+  '/slide/J&L-ens-131.jpg',
+  '/slide/J&L-ens-134.jpg',
+  '/slide/J&L-ens-137.jpg',
+  '/slide/J&L-ens-143.jpg',
+  '/slide/J&L-ens-157.jpg',
+];
+
 function App() {
   // Navigation & Scroll states
   const [activeSection, setActiveSection] = useState('inicio');
+  // Hero Carousel State & Auto-play when visible
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const heroCarouselRef = useRef<HTMLDivElement | null>(null);
+  const [isHeroVisible, setIsHeroVisible] = useState(true);
+
+  useEffect(() => {
+    const el = heroCarouselRef.current;
+    if (!el || typeof IntersectionObserver === 'undefined') return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsHeroVisible(entry.isIntersecting);
+      },
+      { threshold: 0.25 }
+    );
+    observer.observe(el);
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!isHeroVisible) return;
+
+    const timer = setInterval(() => {
+      setCurrentSlide(prev => (prev + 1) % HERO_SLIDES.length);
+    }, 4500);
+
+    return () => clearInterval(timer);
+  }, [isHeroVisible]);
+
+  const handleNextSlide = () => {
+    setCurrentSlide(prev => (prev + 1) % HERO_SLIDES.length);
+  };
+
+  const handlePrevSlide = () => {
+    setCurrentSlide(prev => (prev - 1 + HERO_SLIDES.length) % HERO_SLIDES.length);
+  };
+
 
   // Countdown State
   const [timeLeft, setTimeLeft] = useState({
@@ -1537,16 +1589,59 @@ function App() {
               </div>
             </div>
 
-            <div className="hero-img-wrapper">
-              <img
-                src="/couple_church.jpg"
-                alt="Jacieli e Lucas"
-                className="hero-img"
-                onError={(e) => {
-                  // fallback image
-                  (e.target as HTMLImageElement).src = "/1.png";
+            <div
+              className="hero-img-wrapper hero-carousel-wrapper"
+              ref={heroCarouselRef}
+              onClick={handleNextSlide}
+              title="Clique para avançar a foto"
+            >
+              {HERO_SLIDES.map((src, idx) => (
+                <img
+                  key={src}
+                  src={src}
+                  alt={`Jacieli e Lucas - Foto ${idx + 1}`}
+                  className={`hero-carousel-slide ${idx === currentSlide ? 'active' : ''}`}
+                  loading={idx === 0 ? 'eager' : 'lazy'}
+                />
+              ))}
+
+              <button
+                type="button"
+                className="hero-carousel-arrow hero-carousel-prev"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handlePrevSlide();
                 }}
-              />
+                aria-label="Foto anterior"
+                title="Foto anterior"
+              >
+                <ChevronLeft size={22} />
+              </button>
+
+              <button
+                type="button"
+                className="hero-carousel-arrow hero-carousel-next"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleNextSlide();
+                }}
+                aria-label="Próxima foto"
+                title="Próxima foto"
+              >
+                <ChevronRight size={22} />
+              </button>
+
+              <div className="hero-carousel-dots" onClick={(e) => e.stopPropagation()}>
+                {HERO_SLIDES.map((_, dotIdx) => (
+                  <button
+                    key={dotIdx}
+                    type="button"
+                    className={`hero-carousel-dot ${dotIdx === currentSlide ? 'active' : ''}`}
+                    onClick={() => setCurrentSlide(dotIdx)}
+                    aria-label={`Ir para foto ${dotIdx + 1}`}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </section>
