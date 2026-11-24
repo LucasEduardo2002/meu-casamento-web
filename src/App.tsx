@@ -130,15 +130,15 @@ export const DEFAULT_GUESTS_LIST = [
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 const HERO_SLIDES = [
-  '/slide/J&L-ens-36.jpg',
-  '/slide/J&L-ens-37.jpg',
-  '/slide/J&L-ens-53.jpg',
-  '/slide/J&L-ens-124.jpg',
-  '/slide/J&L-ens-131.jpg',
-  '/slide/J&L-ens-134.jpg',
-  '/slide/J&L-ens-137.jpg',
-  '/slide/J&L-ens-143.jpg',
-  '/slide/J&L-ens-157.jpg',
+  '/slide/J_L-ens-36.jpg',
+  '/slide/J_L-ens-37.jpg',
+  '/slide/J_L-ens-53.jpg',
+  '/slide/J_L-ens-124.jpg',
+  '/slide/J_L-ens-131.jpg',
+  '/slide/J_L-ens-134.jpg',
+  '/slide/J_L-ens-137.jpg',
+  '/slide/J_L-ens-143.jpg',
+  '/slide/J_L-ens-157.jpg',
 ];
 
 function App() {
@@ -181,6 +181,26 @@ function App() {
   const handlePrevSlide = () => {
     setCurrentSlide(prev => (prev - 1 + HERO_SLIDES.length) % HERO_SLIDES.length);
   };
+
+  const touchStartXRef = useRef<number | null>(null);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartXRef.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartXRef.current === null) return;
+    const diff = e.changedTouches[0].clientX - touchStartXRef.current;
+    if (Math.abs(diff) > 40) {
+      if (diff < 0) {
+        handleNextSlide();
+      } else {
+        handlePrevSlide();
+      }
+    }
+    touchStartXRef.current = null;
+  };
+
 
 
   // Countdown State
@@ -1593,6 +1613,8 @@ function App() {
               className="hero-img-wrapper hero-carousel-wrapper"
               ref={heroCarouselRef}
               onClick={handleNextSlide}
+              onTouchStart={handleTouchStart}
+              onTouchEnd={handleTouchEnd}
               title="Clique para avançar a foto"
             >
               {HERO_SLIDES.map((src, idx) => (

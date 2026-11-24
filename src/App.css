@@ -1147,9 +1147,14 @@
   }
   
   .hero-img-wrapper {
+    width: 100%;
+    max-width: 340px;
+    height: 425px;
     max-height: 450px;
-    max-width: 360px;
+    aspect-ratio: 4/5;
     margin: 0 auto;
+    position: relative;
+    display: block;
   }
   
   .details-grid {
@@ -1775,5 +1780,22 @@
     opacity: 0.85;
     width: 34px;
     height: 34px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-carousel-wrapper {
+    width: 100%;
+    max-width: 320px;
+    height: 400px;
+    aspect-ratio: 4/5;
+    margin: 20px auto 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-carousel-wrapper {
+    max-width: 290px;
+    height: 360px;
   }
 }
