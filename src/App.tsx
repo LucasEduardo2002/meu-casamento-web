@@ -1602,13 +1602,25 @@ function App() {
                   loading={idx === 0 ? 'eager' : 'lazy'}
                 />
               ))}
-              <div className="hero-carousel-dots" aria-label="Indicador de foto">
-                {HERO_SLIDES.map((_, idx) => (
-                  <span
-                    key={idx}
-                    className={`hero-carousel-dot ${idx === currentSlide ? 'active' : ''}`}
-                  />
-                ))}
+              <div className="hero-carousel-footer">
+                <div className="hero-carousel-dots" aria-label="Indicador de foto">
+                  {HERO_SLIDES.map((_, idx) => (
+                    <span
+                      key={idx}
+                      className={`hero-carousel-dot ${idx === currentSlide ? 'active' : ''}`}
+                    />
+                  ))}
+                </div>
+                <a
+                  href="https://www.instagram.com/rodrigomarianofotografia/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hero-carousel-credit"
+                  title="Instagram do Fotógrafo: @rodrigomarianofotografia"
+                >
+                  <span className="hero-carousel-credit-icon" aria-hidden="true">📷</span>
+                  <span>@rodrigomarianofotografia</span>
+                </a>
               </div>
             </div>
           </div>

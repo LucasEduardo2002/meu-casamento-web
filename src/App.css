@@ -1699,19 +1699,28 @@
   opacity: 1;
 }
 
-/* Indicadores de página/foto do carrossel */
-.hero-carousel-dots {
+/* Rodapé e Indicadores do Carrossel */
+.hero-carousel-footer {
   position: absolute;
-  bottom: 14px;
+  bottom: 0;
   left: 0;
   right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 24px 16px 12px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0) 100%);
+  z-index: 5;
+  pointer-events: none;
+}
+
+.hero-carousel-dots {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 6px;
-  z-index: 5;
-  pointer-events: none;
-  padding: 0 16px;
   flex-wrap: wrap;
 }
 
@@ -1719,7 +1728,7 @@
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.45);
+  background: rgba(255, 255, 255, 0.5);
   border: 1px solid rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(2px);
   transition: all 0.35s ease;
@@ -1731,6 +1740,40 @@
   border-radius: 4px;
   border-color: rgba(255, 255, 255, 0.7);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.hero-carousel-credit {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.74rem;
+  color: rgba(255, 255, 255, 0.78);
+  text-decoration: none;
+  font-family: inherit;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  pointer-events: auto;
+  transition: all 0.25s ease;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.18);
+  padding: 3px 10px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(4px);
+}
+
+.hero-carousel-credit:hover {
+  color: #ffffff;
+  background: rgba(0, 0, 0, 0.35);
+  border-color: rgba(255, 255, 255, 0.3);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.9);
+  transform: translateY(-1px);
+}
+
+.hero-carousel-credit-icon {
+  font-size: 0.78rem;
+  line-height: 1;
+  opacity: 0.9;
 }
 
 /* Mobile: preencher toda a largura da tela, sem bordas, com efeito de blur nas bordas */
@@ -1746,6 +1789,29 @@
 
   .hero-text {
     padding: 0 20px;
+  }
+
+  .hero-carousel-footer {
+    padding-bottom: 20px;
+    gap: 6px;
+  }
+
+  .hero-carousel-dots {
+    gap: 5px;
+  }
+
+  .hero-carousel-dot {
+    width: 6px;
+    height: 6px;
+  }
+
+  .hero-carousel-dot.active {
+    width: 16px;
+  }
+
+  .hero-carousel-credit {
+    font-size: 0.7rem;
+    padding: 2px 8px;
   }
 
   .hero-carousel-wrapper {
