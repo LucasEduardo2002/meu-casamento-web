@@ -128,9 +128,16 @@ export const DEFAULT_GUESTS_LIST = [
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
 const HERO_SLIDES = [
+  '/slide/J_L-ens-9.jpg',
   '/slide/J_L-ens-36.jpg',
   '/slide/J_L-ens-37.jpg',
+  '/slide/J_L-ens-47.jpg',
   '/slide/J_L-ens-53.jpg',
+  '/slide/J_L-ens-71.jpg',
+  '/slide/J_L-ens-83.jpg',
+  '/slide/J_L-ens-94.jpg',
+  '/slide/J_L-ens-98.jpg',
+  '/slide/J_L-ens-103.jpg',
   '/slide/J_L-ens-124.jpg',
   '/slide/J_L-ens-131.jpg',
   '/slide/J_L-ens-134.jpg',
@@ -1595,6 +1602,14 @@ function App() {
                   loading={idx === 0 ? 'eager' : 'lazy'}
                 />
               ))}
+              <div className="hero-carousel-dots" aria-label="Indicador de foto">
+                {HERO_SLIDES.map((_, idx) => (
+                  <span
+                    key={idx}
+                    className={`hero-carousel-dot ${idx === currentSlide ? 'active' : ''}`}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </section>

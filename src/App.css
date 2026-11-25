@@ -1699,6 +1699,40 @@
   opacity: 1;
 }
 
+/* Indicadores de página/foto do carrossel */
+.hero-carousel-dots {
+  position: absolute;
+  bottom: 14px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  z-index: 5;
+  pointer-events: none;
+  padding: 0 16px;
+  flex-wrap: wrap;
+}
+
+.hero-carousel-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(2px);
+  transition: all 0.35s ease;
+}
+
+.hero-carousel-dot.active {
+  background: var(--gold-primary, #b8860b);
+  width: 20px;
+  border-radius: 4px;
+  border-color: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
 /* Mobile: preencher toda a largura da tela, sem bordas, com efeito de blur nas bordas */
 @media (max-width: 768px) {
   .hero {
